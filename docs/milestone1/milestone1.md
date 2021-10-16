@@ -79,7 +79,7 @@ The location marks represent landmarks. The user icon identifies the position of
 To use this website, you need to create an account.
 
 #### $\underline{Log_{-}in}$
-![Login](Login.png)
+![Login](LogIn.png)
 After create an account, log in to the webpage.
 
 #### $\underline{After_{-}login}$
