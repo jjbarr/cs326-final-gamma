@@ -70,27 +70,27 @@ the user is signed in).
 
 ### User Interface
 
-##### $\underline{Initial_{-}view}$
+##### ***Initial_view***
 ![initialView](initial.png)
 The location marks represent landmarks. The user icon identifies the position of the user.
 
-#### $\underline{Sign_{-}up}$
+#### ***Sign_up***
 ![Signup](Signup.png)
 To use this website, you need to create an account.
 
-#### $\underline{Log_{-}in}$
+#### ***Log_in***
 ![Login](LogIn.png)
 After create an account, log in to the webpage.
 
-#### $\underline{After_{-}login}$
+#### ***After_login***
 ![after-login](after-login.png)
 After a user signs up/logs in, the log in/sign up button is replaced by the "add landmark" button and a user avatar
 
-#### $\underline{Find_{-}and_{-}Review}$
+#### ***Find_and_Review***
 ![click](click.png)
 The user can click on the landmarks to see descriptions and images of that landmark, other people's reviews/comments, and a button that shows the direction to go there. A user may write reviews for the selected landmark by clicking the "Write reivew" button. The descriptions and comments of a landmark can be closed by clicking the "x" circle on the left side of the green bar.
 
-#### $\underline{Share_{-}landmarks}$
+#### ***Share_landmarks***
 ![add-marks](add-landmark.png)
 The user can also add landmarks and comments on the map by clicking the "add" button on the top left corner. The red landmark below represents an added landmark.
 
