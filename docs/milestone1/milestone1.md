@@ -84,11 +84,17 @@ After create an account, log in to the webpage.
 
 #### ***After_login***
 ![after-login](after-login.png)
-After a user signs up/logs in, the log in/sign up button is replaced by the "add landmark" button and a user avatar
+After a user signs up/logs in, the log in/sign up button is replaced by the "add landmark" button and a user avatar.
+
+![user-avatar](user-avatar.png)
+When clicking the user avatar, a user can see its past landmark reviews or log out.
 
 #### ***Find_and_Review***
 ![click](click.png)
 The user can click on the landmarks to see descriptions and images of that landmark, other people's reviews/comments, and a button that shows the direction to go there. A user may write reviews for the selected landmark by clicking the "Write reivew" button. The descriptions and comments of a landmark can be closed by clicking the "x" circle on the left side of the green bar.
+
+![write-review](write-reviews.png)
+Once clicking the "Write reviews" button, the user is able to write its own reviews and give a rating.
 
 #### ***Share_landmarks***
 ![add-marks](add-landmark.png)
