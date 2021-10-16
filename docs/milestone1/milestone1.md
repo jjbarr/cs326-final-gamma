@@ -89,6 +89,10 @@ After a user signs up/logs in, the log in/sign up button is replaced by the "add
 ![user-avatar](user-avatar.png)
 When clicking the user avatar, a user can see its past landmark reviews or log out.
 
+#### ***Remove_Past_Review***
+![Remove_reviews](Remove_reviews.png)
+When click my reviews, a page will show like the image above. The users can delete any reviews that theirselves posted.
+
 #### ***Find_and_Review***
 ![click](click.png)
 The user can click on the landmarks to see descriptions and images of that landmark, other people's reviews/comments, and a button that shows the direction to go there. A user may write reviews for the selected landmark by clicking the "Write reivew" button. The descriptions and comments of a landmark can be closed by clicking the "x" circle on the left side of the green bar.
