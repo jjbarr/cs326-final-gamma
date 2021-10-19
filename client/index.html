@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='UTF-8'>
+    <title>Landmarkster</title>
+    <!-- This tag here tells mobile browsers that we have designed this website 
+         to be viewed on a phone, and thus that our website shouln't be 
+         rescaled to simulate a desktop experience-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- These belong to leaflet, our mapping library. Also in here is LRM,
+         Which is the leaflet component for routing (ie, directions on the 
+         map). These lines also cross the 80-column rule. I resent them for 
+         it. -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+          integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+          crossorigin=""/>
+    <link rel="stylesheet"
+          href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css"/>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+            integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+            crossorigin=""></script>
+    <script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>
+    <!-- These are the files belong to us. -->
+    <link rel="stylesheet" href="style.css">
+    <script src="index.js"></script>
+  </head>
+  <body>
+    <!-- Leaflet needs a div to stick the map inside. -->
+    <div id="map-mountpoint"></div>
+  </body>
+</html>
