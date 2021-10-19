@@ -1,0 +1,11 @@
+/*we need to force the map fullscreen*/
+body, html {
+    min-height: 100%;
+    height: 100%;
+    width: 100%;
+}
+#map-mountpoint {
+    width:100%;
+    height:100%;
+    min-height: 100%;
+}
