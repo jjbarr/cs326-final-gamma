@@ -17,6 +17,27 @@ OpenStreetMap</a> contributors'
     let landmark = L.marker([51.503, -0.07]);
     landmark.addTo(map);
     let popup = L.popup({keepInView:true, closeButton: true})
-        .setContent('Blah blah blah blah blah description goes here');
+        .setContent(mkPopupContent());
     landmark.bindPopup(popup);
 });
+
+
+function mkPopupContent() {
+    //quick and dirty for the prototype
+    return `
+<div class='container-fluid'>
+    <h3>Landmark Name</h3>
+</div>
+<p>Here's a description of what's going on with this here landmark, and all the 
+cool stuff you can see here.</p>
+<div class='row'>
+<button class='btn btn-info'>Take me here!</button>
+</div>
+<hr/>
+<div><b>Username</b>★★★★</div>
+<p>I really liked this landmark</p>
+<hr/>
+<div><b>AnotherUser</b>★</div>
+<p>This landmark sucked!</p>
+`;
+}

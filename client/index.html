@@ -33,7 +33,27 @@
     <script src="index.js"></script>
   </head>
   <body>
-    <!-- Leaflet needs a div to stick the map inside. -->
-    <div id="map-mountpoint"></div>
+    <div class="container-fluid d-flex flex-column h-100">
+      <!-- Bootstrap topbar-->
+      <div class="row">
+        <nav class="navbar navbar-dark bg-dark">
+          <div class="container-fluid">
+            <span class="navbar-brand">Landmarkster</span>
+            <div class="nav-right">
+              <button type="button" id="addbutton" class="btn btn-primary">
+                New Landmark
+              </button>
+              <button type="button" id="login" class="btn btn-secondary">
+                Login
+              </button>
+            </div>
+          </div>
+        </nav>
+      </div>
+      <!-- Leaflet needs a div to stick the map inside. -->
+      <div class="row flex-fill flex-column">
+        <div id="map-mountpoint" class="h-100"></div>
+      </div>
+    </div>
   </body>
 </html>
