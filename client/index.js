@@ -19,6 +19,8 @@ OpenStreetMap</a> contributors'
     let popup = L.popup({keepInView:true, closeButton: true})
         .setContent(mkPopupContent());
     landmark.bindPopup(popup);
+    document.getElementById('login')
+        .addEventListener('click', () => location.href = './login-page.html');
 });
 
 
@@ -41,6 +43,3 @@ cool stuff you can see here.</p>
 <p>This landmark sucked!</p>
 `;
 }
-
-
-
