@@ -23,8 +23,8 @@
         }
         
         img{
-            border-top-left-radius: 40px;
-            border-bottom-left-radius: 40px;
+            border-top-left-radius: 30px;
+            border-bottom-left-radius: 30px;
         }
         .btn1{
             border:none;
@@ -41,7 +41,20 @@
             border: 1px solid;
             color: black;
         }
-
+        .inputLines{
+            border:1px solid grey;
+            outline:none;
+            height: 50px;
+            width: 100%;
+            background-color: white;
+            color: black;
+            border-radius: 4px;
+        }
+        .inputLines:hover{
+            background:white;
+            border: 1px solid;
+            color: black;
+        }
         .middle{
             position: absolute;
             top: 50%;
@@ -50,6 +63,7 @@
             -webkit-transform: translateX(-50%) translateY(-50%);
             transform: translateX(-50%) translateY(-50%);
         }
+        
     </style>
   </head>
   <body>
@@ -57,23 +71,23 @@
         <div class = "container middle">
             <div class = "row no-gutters">
                 <div class = "col-lg-5">
-                    <img src = "./Temp.jpg" class = "img-fluid" alt ="">
+                    <img src = "./eiffel.jpeg" class = "img-fluid" alt ="">
                 </div>
                 <div class = "col-lg-7 px-5 pt-5">
-                    <h1 class = "front-weight-bold py-3">Landmarkster</h1>
+                    <h1 class = "front-weight-bold py-3 mx-5">Landmarkster</h1>
                     <form>
                         <div class = "form-row">
                             <div class = "col-lg-7">
-                                <input type = "email" placeholder = "Email-Address" class = "form-cotrol my-2 p-2">
+                                <input type = "email" placeholder = "Email-Address" class = "form-cotrol mx-5 my-2 p-2 inputLines">
                             </div>
                         </div>
                         <div class = "form-row">
                             <div class = "col-lg-7">
-                                <input type = "password" placeholder = "******" class = "form-cotrol my-2 p-2">
+                                <input type = "password" placeholder = "******" class = "form-cotrol my-2 mx-5 p-2 inputLines">
                             </div>
                         </div>
                         <div class = "form-row">
-                            <div class = "col-lg-7">
+                            <div class = "col-lg-7 mx-5">
                                 <input class="form-check-input" type="checkbox" id="remember-me">
                                 <label class="form-check-label" for="remember-me">
                                     Remember me
@@ -82,11 +96,11 @@
                         </div>
                         <div class = "form-row">
                             <div class = "col-lg-7">
-                                <button type = "button" class="btn1 mt-3 mb-5">Login</button>
+                                <button type = "button" class="btn1 mt-3 mb-5 mx-5">Login</button>
                             </div>
                         </div>
-                        <a href = "#">Forgot password</a>
-                        <p>Don't have an account? <a href = "./Signup.html">Register here</a></p>
+                        <a href = "#" class='mx-5'>Forgot password</a>
+                        <p class='mx-5'>Don't have an account? <a href = "./Signup.html">Register here</a></p>
                     </form>
                 </div>
             </div>
