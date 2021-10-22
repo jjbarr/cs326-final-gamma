@@ -10,51 +10,49 @@
 
     <title>User Interface</title>
     <link rel="stylesheet" href="style.css">
+    <script src="user-interface.js"></script>
   </head>
   <body>
     <!--Columns-->
     <h1 class="row justify-content-center">User Reviews</h1><br></br>
     <div class="container">
       <div class="row d-flex justify-content-left">
-        <div class="col-lg-3" style='border:3px solid rgb(130, 187, 44);
-        display: flex;justify-content: center;'>Landmark</div>
-        <div class="col-lg-6" style='border:3px solid rgb(130, 187, 44);
-        display: flex;justify-content: center;'>Reviews</div>
-        <div class="col-lg-2" style='border:3px solid rgb(130, 187, 44);
-        display: flex;justify-content: center;'>Ratings</div>
+        <div class="col-lg-3 user-container" >Landmark</div>
+        <div class="col-lg-6 user-container" >Reviews</div>
+        <div class="col-lg-2 user-container">Ratings</div>
       </div>
     </div>
     <div class="container">
       <div class="row d-flex justify-content-left">
-        <div class="col-lg-3" style='border:3px solid rgb(130, 187, 44); height:70px;
-        display: flex; justify-content: center; align-items: center;'>Landmark_1</div>
-        <div class="col-lg-6" style='border:3px solid rgb(130, 187, 44); height:70px;
-        display: flex; justify-content: center; align-items: center;'>Best place in the world!</div>
-        <div class="col-lg-2" style='border:3px solid rgb(130, 187, 44); height:70px;
-        display: flex; justify-content: center; align-items: center;'>*****</div>
-        <div class="form-group form-check" style='display: flex; justify-content: center; align-items: center;'>
-          <input type="checkbox" class="form-check-input" id='checkbox'>
-          <label class="form-check-label"></label></div>
+        <div class="col-lg-3 user-container">
+          <div class="form-group form-check user-checkbox" >
+            <input type="checkbox" class="form-check-input" id='checkbox'>
+            <label class="form-check-label"></label></div>
+            Landmark_1
+        </div>
+        <div class="col-lg-6 user-container" >Best place in the world!</div>
+        <div class="col-lg-2 user-container" >*****</div>
+        
       </div>
     </div>
     <div class="container">
       <div class="row d-flex justify-content-left">
-        <div class="col-lg-3" style='border:3px solid rgb(130, 187, 44); height:70px;
-        display: flex; justify-content: center; align-items: center;'>Landmark_2</div>
-        <div class="col-lg-6" style='border:3px solid rgb(130, 187, 44); height:70px;
-        display: flex; justify-content: center; align-items: center;'>SO BORING!</div>
-        <div class="col-lg-2" style='border:3px solid rgb(130, 187, 44); height:70px;
-        display: flex; justify-content: center; align-items: center;'>*</div>
-        <div class="form-group form-check" style='display: flex; justify-content: center; align-items: center;'>
-          <input type="checkbox" class="form-check-input" id='checkbox'>
-          <label class="form-check-label"></label></div>
+        <div class="col-lg-3 user-container">
+          <div class="form-group form-check user-checkbox" >
+            <input type="checkbox" class="form-check-input" id='checkbox'>
+            <label class="form-check-label"></label></div>
+          Landmark_2
+        </div>
+        <div class="col-lg-6 user-container" >SO BORING!</div>
+        <div class="col-lg-2 user-container" >*</div>
+        
       </div>
     </div>
     
-    
-    <!--Remove Button-->
-    <br></br><div class="row justify-content-center">
-      <button type="button" class="btn btn-secondary col-sm-0.5" id='remove-button'>Remove</button>
-    </div>
+    <!--Remove/Return Button-->
+    <br></br><div class="text-center">
+      <button type="button" class="btn btn-secondary" id='remove-btn'>Remove</button>
+      <button type="button" class="btn btn-success" id='return-btn'>Return</button>
+     </div>
   </body>
 </html>
