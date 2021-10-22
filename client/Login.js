@@ -3,6 +3,5 @@ window.addEventListener('DOMContentLoaded', ()=>{
 });
 
 function click(){
-    const url = "./index.html?login=" + "true"
-    location.href = url;
+    location.href = "./index.html?login=true";
 }
