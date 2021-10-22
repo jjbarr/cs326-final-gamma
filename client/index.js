@@ -1,6 +1,5 @@
-
-//Go!
 window.addEventListener('DOMContentLoaded', () => {
+    const login_condition = getURLParam("login");
     //in the real app, map view will track user location. We're not doing that
     //yet.
     let map = L.map('map-mountpoint').setView([51.505, -0.09], 13);
@@ -17,13 +16,12 @@ window.addEventListener('DOMContentLoaded', () => {
     let popup = L.popup({keepInView:true, closeButton: true})
         .setContent(mkPopupContent());
     landmark.bindPopup(popup);
-    document.getElementById("addNewLandmark").style.visibility = "hidden";// Let add newlandmark doesn't show on the intial page
-    document.getElementById("navbarDropdownMenuLink").style.visibility = "hidden";// Let profile doesn't show on the intial page
-    if(login_condition == "true"){
-        document.getElementById("Signin233").style.visibility = "hidden";
-        document.getElementById("addNewLandmark").style.visibility = "visible";// Let add newlandmark show on the this page
-        document.getElementById("navbarDropdownMenuLink").style.visibility = "visible";// Let profile  show on the this page
-    }
+    document.getElementById("addNewLandmark").style.visibility =
+        login_condition? "visible":"hidden";
+    document.getElementById("navbarDropdownMenuLink").style.visibility =
+        login_condition? "visible":"hidden";    
+    document.getElementById("signin").style.visibility =
+        login_condition? "hidden":"visible";
 });
 
 function getURLParam(string){
@@ -31,8 +29,6 @@ function getURLParam(string){
     const r = window.location.search.substr(1).match(reg);
     if (r !== null) {return unescape(r[2]);} return null;
 }
-
-const login_condition = getURLParam("login");
 
 
 function mkPopupContent() {
