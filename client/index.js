@@ -5,9 +5,7 @@ window.addEventListener('DOMContentLoaded', () => {
     //yet.
     let map = L.map('map-mountpoint').setView([51.505, -0.09], 13);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">\
-OpenStreetMap</a> contributors'
-    }).addTo(map);
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">\OpenStreetMap</a> contributors'}).addTo(map);
     let user = L.circleMarker([51.500,-0.08], {
         color: '#ffffff',
         fillOpacity: 1.0,
@@ -19,9 +17,22 @@ OpenStreetMap</a> contributors'
     let popup = L.popup({keepInView:true, closeButton: true})
         .setContent(mkPopupContent());
     landmark.bindPopup(popup);
-    document.getElementById('login')
-        .addEventListener('click', () => location.href = './LOGIN.html');
+    document.getElementById("addNewLandmark").style.visibility = "hidden";// Let add newlandmark doesn't show on the intial page
+    document.getElementById("navbarDropdownMenuLink").style.visibility = "hidden";// Let profile doesn't show on the intial page
+    if(login_condition == "true"){
+        document.getElementById("Signin233").style.visibility = "hidden";
+        document.getElementById("addNewLandmark").style.visibility = "visible";// Let add newlandmark show on the this page
+        document.getElementById("navbarDropdownMenuLink").style.visibility = "visible";// Let profile  show on the this page
+    }
 });
+
+function getURLParam(string){
+    const reg = new RegExp("(^|&)" + string + "=([^&]*)(&|$)");
+    const r = window.location.search.substr(1).match(reg);
+    if (r !== null) {return unescape(r[2]);} return null;
+}
+
+const login_condition = getURLParam("login");
 
 
 function mkPopupContent() {
@@ -43,3 +54,4 @@ cool stuff you can see here.</p>
 <p>This landmark sucked!</p>
 `;
 }
+
