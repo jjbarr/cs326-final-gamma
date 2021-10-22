@@ -20,7 +20,7 @@ OpenStreetMap</a> contributors'
         .setContent(mkPopupContent());
     landmark.bindPopup(popup);
     document.getElementById('login')
-        .addEventListener('click', () => location.href = './login-page.html');
+        .addEventListener('click', () => location.href = './LOGIN.html');
 });
 
 
