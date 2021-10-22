@@ -53,3 +53,10 @@ img{
     -webkit-transform: translateX(-50%) translateY(-50%);
     transform: translateX(-50%) translateY(-50%);
 }
+
+/*This unspeakable hack works around the fact that Bootstrap is an
+  overcomplicated flaming trashfire that in a just universe nobody would use.*/
+.dropdown-menu-right {
+    right: 0;
+    left: auto !important;
+}

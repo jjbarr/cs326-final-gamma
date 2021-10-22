@@ -1,10 +1,12 @@
 window.addEventListener('DOMContentLoaded', () => {
-    const login_condition = getURLParam("login");
+    const login_condition = new URLSearchParams(window.location.search)
+          .get('login') == "true";
     //in the real app, map view will track user location. We're not doing that
     //yet.
     let map = L.map('map-mountpoint').setView([51.505, -0.09], 13);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">\OpenStreetMap</a> contributors'}).addTo(map);
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">\OpenStreetMap</a> contributors'})
+        .addTo(map);
     let user = L.circleMarker([51.500,-0.08], {
         color: '#ffffff',
         fillOpacity: 1.0,
@@ -16,20 +18,13 @@ window.addEventListener('DOMContentLoaded', () => {
     let popup = L.popup({keepInView:true, closeButton: true})
         .setContent(mkPopupContent());
     landmark.bindPopup(popup);
-    document.getElementById("addNewLandmark").style.visibility =
-        login_condition? "visible":"hidden";
-    document.getElementById("navbarDropdownMenuLink").style.visibility =
-        login_condition? "visible":"hidden";    
-    document.getElementById("signin").style.visibility =
-        login_condition? "hidden":"visible";
+    if(login_condition) {
+        document.getElementById("signin").style.display = "none";
+    } else {
+        document.getElementById("addNewLandmark").style.display = "none";
+        document.getElementById("user-menu").style.display = "none";
+    }
 });
-
-function getURLParam(string){
-    const reg = new RegExp("(^|&)" + string + "=([^&]*)(&|$)");
-    const r = window.location.search.substr(1).match(reg);
-    if (r !== null) {return unescape(r[2]);} return null;
-}
-
 
 function mkPopupContent() {
     //quick and dirty for the prototype
