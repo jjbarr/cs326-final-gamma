@@ -68,7 +68,7 @@ provide a REST API allowing the frontend to request information from the
 database and add new landmarks if the user requests (provided, of course, that
 the user is signed in).
 
-### User Interface
+### Wireframes
 
 ##### ***Initial_view***
 ![initialView](initial.png)
@@ -105,4 +105,22 @@ Once clicking the "Write reviews" button, the user is able to write its own revi
 The user can also add landmarks and comments on the map by clicking the "add" button on the top left corner. The red landmark below represents an added landmark.
 
 
+### HTML Pages
+![homepage](homepage.png)
+The homepage of our project includes a map with a location of the user, landmark signs, and a login button.
 
+![login-page](login-page.png)
+The login page allows users to enter username or email address with their password to login.
+
+![signup-page](signup-page.png)
+If the user does not have an account already, they can click on the "register here" and come to the sign up page.
+
+![user-homepage](user-homepage.png)
+Once logged in, the user can click on the user avatar to choose to see their reviews or sign out, or add landmarks.
+
+![user-review](user-reviews.png)
+Users are able to see their previous reviews on certain landmarks, remove reviews, or return to the homepage.
+
+### Division of labor
+Ruoyi Wu (Email: ruoyiwu@umass.edu, Github: Ry-Wu)
+##### 1. 
