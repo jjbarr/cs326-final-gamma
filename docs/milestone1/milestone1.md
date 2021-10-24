@@ -133,3 +133,9 @@ Users are able to see their previous reviews on certain landmarks, remove review
 1. Did the map layout on the main page
 2. Integration work (cleanup, analysis, etc)
 3. Drew up the mainpage topbar
+
+#### Qinyi Tang
+(Email: qinyitang@umass.edu, Github: Qinyit0)
+1. refined login pages
+2. created a separate signup page and linked with login page
+3. user specific homepage after login
