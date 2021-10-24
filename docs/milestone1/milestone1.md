@@ -122,8 +122,12 @@ Once logged in, the user can click on the user avatar to choose to see their rev
 Users are able to see their previous reviews on certain landmarks, remove reviews, or return to the homepage.
 
 ### Division of labor
-#### Ruoyi Wu (Email: ruoyiwu@umass.edu, Github: Ry-Wu)
-##### 1. 
+#### Ruoyi Wu 
+(Email: ruoyiwu@umass.edu, Github: Ry-Wu)
+1. implemented initial sign-up/login page
+2. created and revised user review page
+3. added links between different HTML pages
+
 #### Joshua Barrett 
 (Emails: jjbarrett@umass.edu, jbarrett186@gmail.com; github:jjbarr)
 1. Did the map layout on the main page
