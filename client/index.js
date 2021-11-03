@@ -1,48 +1,76 @@
-window.addEventListener('DOMContentLoaded', () => {
-    const login_condition = new URLSearchParams(window.location.search)
-          .get('login') == "true";
-    //in the real app, map view will track user location. We're not doing that
-    //yet.
-    let map = L.map('map-mountpoint').setView([51.505, -0.09], 13);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">\OpenStreetMap</a> contributors'})
-        .addTo(map);
-    let user = L.circleMarker([51.500,-0.08], {
-        color: '#ffffff',
-        fillOpacity: 1.0,
-        fillColor: '#3388ff'
-    });
-    user.addTo(map);
-    let landmark = L.marker([51.503, -0.07]);
-    landmark.addTo(map);
-    let popup = L.popup({keepInView:true, closeButton: true})
-        .setContent(mkPopupContent());
-    landmark.bindPopup(popup);
-    if(login_condition) {
-        document.getElementById("signin").style.display = "none";
-    } else {
-        document.getElementById("addNewLandmark").style.display = "none";
-        document.getElementById("user-menu").style.display = "none";
-    }
-});
+let map = null;
+let userLoc = null;
+let lastreqll = null;
 
-function mkPopupContent() {
-    //quick and dirty for the prototype
-    return `
+async function getlandmarks() {
+    //we should actually unbind landmarks and GC them, but for now we'll assume
+    //that that's not an issue.
+    const bounds = map.getBounds();
+    const lat1 = bounds.getNorthWest().lat;
+    const long1 = bounds.getNorthWest().lng;
+    const lat2 = bounds.getSouthEast().lat;
+    const long2 = bounds.getSouthEast().lng;
+    (await (await fetch(
+        `/landmarks_in?lat1=${lat1}&long1=${long1}&lat2=${lat2}&long2=${long2}`))
+     .json())
+        .forEach((lmk) => {
+            let landmark = L.marker(lmk.geometry.coordinates);
+            landmark.addTo(map);
+            let popup = L.popup({keepInView:true, closeButton: true})
+                .setContents(`
 <div class='container-fluid'>
-    <h3>Landmark Name</h3>
-</div>
-<p>Here's a description of what's going on with this here landmark, and all the 
-cool stuff you can see here.</p>
-<div class='row'>
-<button class='btn btn-info'>Take me here!</button>
+<h3>${lmk.properties.name}</h3>
 </div>
 <hr/>
-<div><b>Username</b>★★★★</div>
-<p>I really liked this landmark</p>
+${lmk.properties.description}
 <hr/>
-<div><b>AnotherUser</b>★</div>
-<p>This landmark sucked!</p>
-`;
+${lmk.properties.review
+.map((rev) => `
+                             <div>
+                             <div>
+                             <a href='/user/${rev.creator}'>${rev.creator}</a>
+                             ${Array(rev.stars).fill('★').join('')}
+                             </div>
+                             <div>
+                             ${rev.body}
+                             </div>
+                             </div>
+                             `).join('')}
+`);
+            //TODO: Add review.
+        });
 }
 
+window.addEventListener('DOMContentLoaded', () => {
+    //TODO Login tokens
+    let login_condition = false;
+    //in the real app, map view will track user location. We're not doing that
+    //yet.
+    navigator.geolocation.getCurrentPosition((pos) => {
+        map = L.map('map-mountpoint')
+            .setView([pos.coords.latitude, pos.coords.longitude], 15);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">\OpenStreetMap</a> contributors'})
+            .addTo(map);
+        userLoc = L.circleMarker([pos.coords.latitude,pos.coords.longitude], {
+            color: '#ffffff',
+            fillOpacity: 1.0,
+            fillColor: '#3388ff'
+        });
+        userLoc.addTo(map);
+        lastreqll = [pos.coords.latitude, pos.coords.longitude];
+        (async ()=> await getlandmarks())();
+        if(login_condition) {
+            document.getElementById("signin").style.display = "none";
+        } else {
+            document.getElementById("addNewLandmark").style.display = "none";
+            document.getElementById("user-menu").style.display = "none";
+        }
+        navigator.geolocation.watchPosition((pos) => {
+            userLoc.setLatLng(new L.LatLng(pos.coords.latitude,
+                                           pos.coords.longitude));
+        });
+        map.on('zoomend', () => (async () => await getlandmarks())());
+        map.on('moveend', () => (async () => await getlandmarks())());
+        });
+});
