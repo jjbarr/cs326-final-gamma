@@ -1,10 +1,18 @@
-const express = require('express');
+//const express = require('express');
+import express from 'express';
 const app = express();
 const port = 8180;
+app.use(express.static('client'));
 
+app.get('/login', (req, res) => {
+    res.redirect('login.html');
+});
 app.post('/login', (req, res) => {});
 app.post('/logout', (req, res) => {});
 app.post('/signup', (req, res) => {});
+app.get('/signup', (req, res) => {
+    res.redirect('Signup.html');
+});
 app.post('/create_landmark', (req, res) => {});
 app.get('/landmark/:id', (req, res) => {});
 app.patch('/landmark/:id', (req,res) => {});
