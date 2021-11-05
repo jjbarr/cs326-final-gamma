@@ -6,7 +6,7 @@ app.use(express.urlencoded({extended:true}));
 
 //home page: once open localhost:3000
 app.get('/', (req, res) => {
-    res.sendFile('index.html');
+    res.redirect('index.html');
 })
 
 app.get('/login', (req, res) => {
