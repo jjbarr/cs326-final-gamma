@@ -10,7 +10,7 @@ app.get('/', (req, res) => {
 })
 
 app.get('/login', (req, res) => {
-    res.sendFile('login.html');
+    res.redirect('login.html');
 });
 //when click on log in, will send a meessage
 app.post('/login', (req, res) => {
@@ -20,7 +20,7 @@ app.post('/login', (req, res) => {
 app.post('/logout', (req, res) => {});
 
 app.get('/signup', (req, res) => {
-    res.sendFile('signup.html');
+    res.redirect('signup.html');
 });
 app.post('/signup', (req, res) => {
     res.json({"text":"you have signed up!"});
