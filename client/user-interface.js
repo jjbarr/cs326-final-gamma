@@ -5,3 +5,7 @@ window.addEventListener('DOMContentLoaded', ()=>{
 function returnHome(){
     location.href = "./index.html?login=true";
 }
+
+function update(){
+    
+}
