@@ -4,12 +4,25 @@ window.addEventListener('DOMContentLoaded', ()=>{
     document.getElementById('add-btn').addEventListener('click', updateReview);
 });
 
+// window.addEventListener("load", async function() {
+//     const response = await fetch("userReviews.json");
+//     if (!response.ok) {
+//         console.log(response.error);
+//         return;
+//     }
+
+// const userComments = document.getElementById('userComments');
+// render(boardElement);
+
 function returnHome(){
     location.href = "./index.html?login=true";
 }
 
 function deleteReview() {
-    document.getElementById('row').remove();
+    let reviews = document.getElementById('userReview');
+    if(reviews.rows.length >= 3){
+        document.getElementById('row').remove();
+    }
 }
   
 function updateReview() {

@@ -84,6 +84,7 @@ app.get('/user/:id', (req,res) => {});
 app.get('/landmarks_in', (req, res) => {});
 
 //redirect to review page and show all the reviews
+
 app.get('/review/:id', (req,res) => {
     res.redirect('/user-interface.html');
     // let reviews =[];
@@ -95,6 +96,8 @@ app.get('/review/:id', (req,res) => {
     //     reviews['name']
     // }
 });
+
+
 
 //save all reviews to a JSON file
 app.post('/review/:id', (req,res) => {
@@ -114,11 +117,33 @@ app.post('/review/:id', (req,res) => {
     userReview['rating'] = rating;
     userReviews.push(userReview);
     fs.writeFileSync(reviewJSONfile, JSON.stringify(userReviews));
+    res.redirect('/user-interface.html');
+    res.end();
+    
+    // let reviews =[];
+    // if (fs.existsSync(reviewJSONfile)) {
+    //     reviews = JSON.parse(fs.readFileSync(reviewJSONfile));
+    // }
+    // console.log(reviews);
+
+
+    // for(let i = 0; i < reviews.length; i ++){
+    //     const div = document.createElement('div');
+    //     div.classList.add('grid-item');
+    //     div.innerText = review;
+    //     element.appendChild('div');
+    // }
+
+    // for(let i = 0 ; i < reviews.length; i++){
+    //     reviews['name'];
+    // }
 });
 
 //delete a review from the JSON file
+
 app.delete('/review/:id', (req,res) => {
 });
+
 
 
 //port
