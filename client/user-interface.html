@@ -9,50 +9,36 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
     <title>User Interface</title>
-    <link rel="stylesheet" href="style.css">
+   <link rel="stylesheet" href="style.css">
     <script src="user-interface.js"></script>
   </head>
   <body>
-    <!--Columns-->
-    <h1 class="row justify-content-center">User Reviews</h1><br></br>
-    <div class="container">
-      <div class="row d-flex justify-content-left">
-        <div class="col-lg-3 user-container" >Landmark</div>
-        <div class="col-lg-6 user-container" >Reviews</div>
-        <div class="col-lg-2 user-container">Ratings</div>
-      </div>
-    </div>
-    <div class="container">
-      <div class="row d-flex justify-content-left">
-        <div class="col-lg-3 user-container">
-          <div class="form-group form-check user-checkbox" >
-            <input type="checkbox" class="form-check-input" id='checkbox'>
-            <label class="form-check-label"></label></div>
-            Landmark_1
-        </div>
-        <div class="col-lg-6 user-container" >Best place in the world!</div>
-        <div class="col-lg-2 user-container" >*****</div>
-        
-      </div>
-    </div>
-    <div class="container">
-      <div class="row d-flex justify-content-left">
-        <div class="col-lg-3 user-container">
-          <div class="form-group form-check user-checkbox" >
-            <input type="checkbox" class="form-check-input" id='checkbox'>
-            <label class="form-check-label"></label></div>
-          Landmark_2
-        </div>
-        <div class="col-lg-6 user-container" >SO BORING!</div>
-        <div class="col-lg-2 user-container" >*</div>
-        
-      </div>
-    </div>
-    
-    <!--Remove/Return Button-->
-    <br></br><div class="text-center">
-      <button type="button" class="btn btn-secondary" id='remove-btn'>Remove</button>
-      <button type="button" class="btn btn-success" id='return-btn'>Return</button>
-     </div>
+    <div id="usertablediv">
+      <h1>User Review</h1>
+        </table>
+          
+            <div id="userReviewdiv">
+              <table id="userReview" border="1">
+                <tr>
+                  <td>Landmark</td>
+                  <td>Review</td>
+                  <td>Rating</td>
+                </tr>
+                <form action="/review/:id" method="post">
+                <tr id='row'>
+                  <td><input size=25 type="text" id="name" name='name' /></td>
+                  <td><input size=40 type="text" id="review" name='review' /></td>
+                  <td><input size=25 type="text" id="rating" name='rating' /></td>
+                </tr>
+              </table>
+              <br/>
+              <td><input type="submit" id="submit-btn" name='submit-btn' value="Submit" class='btn btn-primary'/></td>
+              
+              <td><input type="button" id="remove-btn" value="Delete" class='btn btn-secondary' /></td>
+            <td><button type="button" class="btn btn-success" id='return-btn'>Return</button></td>
+            </form>
+            <br></br>
+            <div id='table' name='table'>
+            </div>
   </body>
 </html>
