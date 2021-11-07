@@ -2,7 +2,7 @@ async function errormsg(){
     username = document.getElementById("username").value;
     password = document.getElementById("password").value;
     
-    const response = await fetch('http://localhost:3000/login',{
+    const response = await fetch('/login',{
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded'
           },

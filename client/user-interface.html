@@ -29,16 +29,16 @@
                   <td><input size=25 type="text" id="name" name='name' /></td>
                   <td><input size=40 type="text" id="review" name='review' /></td>
                   <td><input size=25 type="text" id="rating" name='rating' /></td>
-                  <td><input type="submit" id="submit-btn" name='submit-btn' value="Submit" class='btn btn-success'/></td>
-                  <td><input type="button" id="remove-btn" value="Delete" class='btn btn-secondary' onclick="deleteReview(this)" /></td>
                 </tr>
               </table>
+              <br/>
+              <td><input type="submit" id="submit-btn" name='submit-btn' value="Submit" class='btn btn-primary'/></td>
               
-            <td><input type="button" class='btn btn-primary' id="add-btn" value="Add"/></td>
+              <td><input type="button" id="remove-btn" value="Delete" class='btn btn-secondary' /></td>
             <td><button type="button" class="btn btn-success" id='return-btn'>Return</button></td>
             </form>
-
-            <div id='table' name='table' class='user-container'>
+            <br></br>
+            <div id='table' name='table'>
             </div>
   </body>
 </html>

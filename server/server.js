@@ -93,7 +93,6 @@ app.get("/loadallreviews", async (req, res) => {
     if (fs.existsSync(reviewJSONfile)) {
         reviews = JSON.parse(fs.readFileSync(reviewJSONfile));
     }
-    console.log(reviews);
     res.send(JSON.stringify(reviews));
 });
 
@@ -118,7 +117,20 @@ app.post('/review/:id', (req,res) => {
 });
 
 //delete a review from the JSON file
-app.delete('/review/:id', (req,res) => {
+app.post('/deletereview', async (req,res) => {
+    let reviews = JSON.parse(fs.readFileSync(reviewJSONfile));
+    let name = req.body.name;
+    let index = 0;
+    for(let i = 0 ; i < reviews.length; i++){
+        if(reviews[i]['name'] == name){
+            break;
+        }
+        else{
+            index += 1;
+        }
+    }
+    reviews.splice(index, 1);
+    fs.writeFileSync(reviewJSONfile, JSON.stringify(reviews));
 });
 
 

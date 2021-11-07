@@ -1,22 +1,33 @@
 // const { traceDeprecation } = require("process");
 
 window.addEventListener('DOMContentLoaded', ()=>{   
-    document.getElementById('remove-btn').addEventListener('click', deleteReview);
+    document.getElementById('remove-btn').addEventListener('click', deleteRow);
     document.getElementById('return-btn').addEventListener('click', returnHome);
-    document.getElementById('add-btn').addEventListener('click', updateReview);
+    document.getElementById('submit-btn').addEventListener('click', updateReview);
 });
 
 function returnHome(){
     location.href = "./index.html?login=true";
 }
 
-function deleteReview() {
-    document.getElementById('row').remove();
+async function deleteRow(){
+    let name = document.getElementById('name');
+    console.log("name:" + name.value);
+    deleteReview(name.value);
+}
+async function deleteReview(name) {
+    await fetch('/deletereview', {
+        method:"POST",
+        headers: {
+            "Content-Type" : "application/x-www-form-urlencoded"
+        },
+        body: "name=" + name
+    })
 }
   
 function updateReview() {
     let x = document.getElementById('userReview');
-    let newRow = x.rows[1].cloneNode(true);
+    let newRow = x.rows[0].cloneNode(true);
     let length = x.rows.length;
   
     let lm = newRow.cells[0].getElementsByTagName('input')[0];
