@@ -61,3 +61,5 @@ presently under-specifed because we still need to figure out the spec.
   parameters `lat1`, `long1`, `lat2`, `long2`, which define a rectangle. Shall
   return a JSON arry of `landmark` objects that are containted within the bounds
   of this rectangle.
+![FlowDiagram](flowDiagram.png)
+The API flow diagram looks like the picture above.

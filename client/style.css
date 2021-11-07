@@ -80,17 +80,16 @@ img{
     margin: 5px;
 }
 
-.grid-item {
-    height: 40px;
-    width: 40px;
-    border: 1px solid black;
-    text-transform: uppercase;
-    font-family: sans-serif;
-    font-weight: bold;
-
-    /* The following will align the letters to the center of each square */
-    /* See this useful guide: https://css-tricks.com/snippets/css/a-guide-to-flexbox/ */
-    display: flex;
-    align-items: center;
-    justify-content: center;
+th, td, p, input {
+    font:14px Verdana;
+}
+table, th, td 
+{
+    border: solid 1px #DDD;
+    border-collapse: collapse;
+    padding: 2px 3px;
+    text-align: center;
+}
+th {
+    font-weight:bold;
 }

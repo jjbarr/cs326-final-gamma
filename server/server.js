@@ -120,11 +120,11 @@ app.post('/review/:id', (req,res) => {
     res.redirect('/user-interface.html');
     res.end();
     
-    // let reviews =[];
-    // if (fs.existsSync(reviewJSONfile)) {
-    //     reviews = JSON.parse(fs.readFileSync(reviewJSONfile));
-    // }
-    // console.log(reviews);
+    let reviews =[];
+    if (fs.existsSync(reviewJSONfile)) {
+        reviews = JSON.parse(fs.readFileSync(reviewJSONfile));
+    }
+    console.log(reviews);
 
 
     // for(let i = 0; i < reviews.length; i ++){

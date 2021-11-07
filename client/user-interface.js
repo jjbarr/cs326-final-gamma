@@ -1,18 +1,9 @@
 window.addEventListener('DOMContentLoaded', ()=>{   
     document.getElementById('remove-btn').addEventListener('click', deleteReview);
     document.getElementById('return-btn').addEventListener('click', returnHome);
-    document.getElementById('add-btn').addEventListener('click', updateReview);
+    //document.getElementById('add-btn').addEventListener('click', updateReview);
 });
 
-// window.addEventListener("load", async function() {
-//     const response = await fetch("userReviews.json");
-//     if (!response.ok) {
-//         console.log(response.error);
-//         return;
-//     }
-
-// const userComments = document.getElementById('userComments');
-// render(boardElement);
 
 function returnHome(){
     location.href = "./index.html?login=true";
