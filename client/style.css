@@ -81,3 +81,17 @@ th, td {
     position: relative;
     margin: 5px;
 }
+
+th, td, p, input {
+    font:14px Verdana;
+}
+table, th, td 
+{
+    border: solid 1px #DDD;
+    border-collapse: collapse;
+    padding: 2px 3px;
+    text-align: center;
+}
+th {
+    font-weight:bold;
+}

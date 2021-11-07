@@ -3,13 +3,19 @@
 window.addEventListener('DOMContentLoaded', ()=>{   
     document.getElementById('remove-btn').addEventListener('click', deleteRow);
     document.getElementById('return-btn').addEventListener('click', returnHome);
+<<<<<<< HEAD
     document.getElementById('submit-btn').addEventListener('click', updateReview);
+=======
+    //document.getElementById('add-btn').addEventListener('click', updateReview);
+>>>>>>> 1dc96d21bd2dc360dc144af52dfc1f47c846a076
 });
+
 
 function returnHome(){
     location.href = "./index.html?login=true";
 }
 
+<<<<<<< HEAD
 async function deleteRow(){
     let name = document.getElementById('name');
     console.log("name:" + name.value);
@@ -23,6 +29,13 @@ async function deleteReview(name) {
         },
         body: "name=" + name
     })
+=======
+function deleteReview() {
+    let reviews = document.getElementById('userReview');
+    if(reviews.rows.length >= 3){
+        document.getElementById('row').remove();
+    }
+>>>>>>> 1dc96d21bd2dc360dc144af52dfc1f47c846a076
 }
   
 function updateReview() {
