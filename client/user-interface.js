@@ -1,3 +1,5 @@
+// const { traceDeprecation } = require("process");
+
 window.addEventListener('DOMContentLoaded', ()=>{   
     document.getElementById('remove-btn').addEventListener('click', deleteReview);
     document.getElementById('return-btn').addEventListener('click', returnHome);
@@ -32,3 +34,36 @@ function updateReview() {
     x.appendChild(newRow);
 }
 
+async function reviewsReceivedFromServer(){
+    
+    const response = await fetch('/loadallreviews',{
+        method: "GET"
+    });
+    let data = await response.json();
+    render(data);
+}
+
+window.addEventListener('load', async () => reviewsReceivedFromServer());
+
+function render(JSONObj){
+    const labels = ['name', 'review', 'rating'];
+    let reviews = JSON.parse(JSON.stringify(JSONObj));
+
+    let element = document.getElementById('table');
+    let table = document.createElement('table');
+    let tableBody = document.createElement('tbody');
+    table.appendChild(tableBody);
+    for(let i = 0 ; i < reviews.length; i++){
+        let tr = document.createElement('tr');
+        for(let j = 0; j < 3; j++){
+            let td = document.createElement('td');
+            td.innerHTML = reviews[i][labels[j]];
+            tr.appendChild(td);
+        }
+        tableBody.appendChild(tr); 
+    }
+    table.appendChild(tableBody);
+    element.appendChild(table);
+}
+
+  

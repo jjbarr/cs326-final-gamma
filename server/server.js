@@ -86,14 +86,15 @@ app.get('/landmarks_in', (req, res) => {});
 //redirect to review page and show all the reviews
 app.get('/review/:id', (req,res) => {
     res.redirect('/user-interface.html');
-    // let reviews =[];
-    // if (fs.existsSync(reviewJSONfile)) {
-    //     reviews = JSON.parse(fs.readFileSync(reviewJSONfile));
-    // }
-    // console.log(reviews);
-    // for(let i = 0 ; i < reviews.length; i++){
-    //     reviews['name']
-    // }
+});
+
+app.get("/loadallreviews", async (req, res) => {
+    let reviews =[];
+    if (fs.existsSync(reviewJSONfile)) {
+        reviews = JSON.parse(fs.readFileSync(reviewJSONfile));
+    }
+    console.log(reviews);
+    res.send(JSON.stringify(reviews));
 });
 
 //save all reviews to a JSON file
