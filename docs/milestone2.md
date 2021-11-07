@@ -70,7 +70,7 @@ The API flow diagram looks like the picture above.
 ![login](login.png)
 ### The Login Service API provides endpoints to manage the User Session in Conversational Cloud. Use this API to log into Conversational Cloud as a user with credentials or an application with an API key.
 ### The user reviews API provides following functionalities:
-![addre](addre.png)
+![addre](Addre.png)
 ##### 1. Add comments
 ![deletere](deletere.png)
 ##### 2. Delete comments
