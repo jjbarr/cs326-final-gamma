@@ -1,6 +1,6 @@
 async function errormsg(){
-    username = document.getElementById("username").value;
-    password = document.getElementById("password").value;
+    let username = document.getElementById("username").value;
+    let password = document.getElementById("password").value;
     
     const response = await fetch('/login',{
         headers: {
