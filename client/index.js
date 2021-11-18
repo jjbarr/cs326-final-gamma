@@ -2,6 +2,8 @@ let map = null;
 let userLoc = null;
 let lastreqll = null;
 
+let landmarks = {};
+
 async function getlandmarks() {
     //we should actually unbind landmarks and GC them, but for now we'll assume
     //that that's not an issue.
@@ -13,31 +15,77 @@ async function getlandmarks() {
     (await (await fetch(
         `/landmarks_in?lat1=${lat1}&long1=${long1}&lat2=${lat2}&long2=${long2}`))
      .json())
+        .filter((lmk) => {
+            let r = landmarks[lmk.properties.id];
+            landmarks[lmk.properties.id]=true;
+            return r;
+        })
         .forEach((lmk) => {
             let landmark = L.marker(lmk.geometry.coordinates);
             landmark.addTo(map);
             let popup = L.popup({keepInView:true, closeButton: true})
-                .setContents(`
-<div class='container-fluid'>
-<h3>${lmk.properties.name}</h3>
-</div>
-<hr/>
-${lmk.properties.description}
-<hr/>
-${lmk.properties.review
-.map((rev) => `
-                             <div>
-                             <div>
-                             <a href='/user/${rev.creator}'>${rev.creator}</a>
-                             ${Array(rev.stars).fill('★').join('')}
-                             </div>
-                             <div>
-                             ${rev.body}
-                             </div>
-                             </div>
-                             `).join('')}
-`);
-            //TODO: Add review.
+                .setContent(() => {
+                    const content = document.createElement('div');
+                    content.classList.add('container-fluid');
+                    content.appendChild((()=>{
+                        const h = document.createElement('h3');
+                        h.innerText = lmk.properties.name;
+                        return h;
+                    })());
+                    content.appendChild(document.createElement('hr'));
+                    content.appendChild((()=>{
+                        const desc = document.createElement('div');
+                        desc.innerText = lmk.properties.description;
+                        return desc;
+                    })());
+                    content.appendChild((()=>{
+                        const reviews = document.createElement('div');
+                        lmk.properties.review.forEach((review) => {
+                            const review = document.createElement('div');
+                            review.appendChild((()=>{
+                                const top = document.createElement('span');
+                                top.appendChild((()=>{
+                                    const user = document.createElement('a');
+                                    user.href = `/user/${review.creator}`;
+                                    user.innerText = review.creator;
+                                    return user;
+                                })());
+                                top.appendChild(
+                                    document.createTextNode(
+                                        Array(review.stars).fill('★').join('')));
+                                return top;
+                            })());
+                            review.appendChild((()=>{
+                                const body = document.createElement('div');
+                                body.innerText = review.body;
+                                return body;
+                            })());
+                            reviews.appendChild(review);
+                        });
+                    })());
+                    content.appendChild((()=>{
+                        const reviewform = document.createElement('form');
+                        const title = document.createElement('input');
+                        title.setAttribute('type','text');
+                        title.setAttribute('placeholder','Title');
+                        reviewform.appendChild(title);
+                        const stars = document.createElement('input');
+                        stars.setAttribute('type','number');
+                        stars.setAttribute('min', '1');
+                        stars.setAttribute('max', '5');
+                        reviewform.appendChild(stars);
+                        const body = document.createElement('textarea');
+                        body.setAttribute('placeholder', 'your review');
+                        reviewform.appendChild(body);
+                        const add = document.createElement('input');
+                        add.setAttribute('type', 'button');
+                        add.setAttribute('value', 'Submit Review');
+                        add.classList.add(['btn', 'btn-primary']);
+                        reviewform.appendChild(add);
+                        return reviewform;
+                    })());
+                    return content;
+                });
         });
 }
 
@@ -72,5 +120,5 @@ window.addEventListener('DOMContentLoaded', () => {
         });
         map.on('zoomend', () => (async () => await getlandmarks())());
         map.on('moveend', () => (async () => await getlandmarks())());
-        });
+    });
 });
