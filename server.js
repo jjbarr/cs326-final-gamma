@@ -5,6 +5,30 @@ const app = express();
 app.use(express.static('client'));
 app.use(express.urlencoded({extended:true}));
 
+
+let secrets;
+let password;
+if (!process.env.PASSWORD) {
+    secrets = require('secrets.json');
+    password = secrets.password;
+} else {
+	password = process.env.PASSWORD;
+}
+
+const pgp = require('pg-promise');
+
+let url;
+if(!process.env.DATABASE_URL){
+    let secrets = require('secrets.json');
+    url = `postgres://${secrets.username}:${secrets.password}@localhost:${secrets.db_port}`;
+
+}
+else{
+    url = process.env.DATABASE_URL;
+}
+const db = pgp(url);
+
+
 let userJSONfile = 'userInfo.json';
 let reviewJSONfile = 'userReviews.json';
 
