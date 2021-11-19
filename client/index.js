@@ -90,8 +90,7 @@ async function getlandmarks() {
 }
 
 window.addEventListener('DOMContentLoaded', () => {
-    //TODO Login tokens
-    let login_condition = false;
+    let login = false;
     //in the real app, map view will track user location. We're not doing that
     //yet.
     navigator.geolocation.getCurrentPosition((pos) => {
@@ -108,7 +107,7 @@ window.addEventListener('DOMContentLoaded', () => {
         userLoc.addTo(map);
         lastreqll = [pos.coords.latitude, pos.coords.longitude];
         (async ()=> await getlandmarks())();
-        if(login_condition) {
+        if(login) {
             document.getElementById("signin").style.display = "none";
         } else {
             document.getElementById("addNewLandmark").style.display = "none";

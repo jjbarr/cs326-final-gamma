@@ -22,7 +22,7 @@ async function deleteReview(name) {
             "Content-Type" : "application/x-www-form-urlencoded"
         },
         body: "name=" + name
-    })
+    });
 }
   
 function updateReview() {
