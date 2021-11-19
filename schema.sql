@@ -1,7 +1,6 @@
 CREATE TABLE users (
        uname VARCHAR PRIMARY KEY,
-       password VARCHAR,
-       email VARCHAR, --maybe delete?
+       password VARCHAR
 );
 
 CREATE TABLE landmarks (
@@ -15,7 +14,7 @@ CREATE TABLE landmarks (
 );
 
 CREATE TABLE reviews (
-       id SERIAL PRIMARY KEY
+       id SERIAL PRIMARY KEY,
        creator VARCHAR,
        landmark INTEGER,
        stars INTEGER,
@@ -24,4 +23,4 @@ CREATE TABLE reviews (
        FOREIGN KEY(landmark) REFERENCES landmarks(id)
 );
 
-CREATE INDEX coords ON landmarks USING gin (lat,long);
+CREATE INDEX coords ON landmarks (lat,long);

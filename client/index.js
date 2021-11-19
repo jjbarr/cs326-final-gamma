@@ -40,28 +40,29 @@ async function getlandmarks() {
                     })());
                     content.appendChild((()=>{
                         const reviews = document.createElement('div');
-                        lmk.properties.review.forEach((review) => {
+                        lmk.properties.review.forEach((rev) => {
                             const review = document.createElement('div');
                             review.appendChild((()=>{
                                 const top = document.createElement('span');
                                 top.appendChild((()=>{
                                     const user = document.createElement('a');
-                                    user.href = `/user/${review.creator}`;
-                                    user.innerText = review.creator;
+                                    user.href = `/user/${rev.creator}`;
+                                    user.innerText = rev.creator;
                                     return user;
                                 })());
                                 top.appendChild(
                                     document.createTextNode(
-                                        Array(review.stars).fill('★').join('')));
+                                        Array(rev.stars).fill('★').join('')));
                                 return top;
                             })());
                             review.appendChild((()=>{
                                 const body = document.createElement('div');
-                                body.innerText = review.body;
+                                body.innerText = rev.body;
                                 return body;
                             })());
                             reviews.appendChild(review);
                         });
+                        return reviews;
                     })());
                     content.appendChild((()=>{
                         const reviewform = document.createElement('form');
@@ -89,10 +90,9 @@ async function getlandmarks() {
         });
 }
 
-window.addEventListener('DOMContentLoaded', () => {
-    let login = false;
-    //in the real app, map view will track user location. We're not doing that
-    //yet.
+window.addEventListener('DOMContentLoaded', async () => {
+    let logged_in = (await (await fetch('/logged_in')).json()).result;
+
     navigator.geolocation.getCurrentPosition((pos) => {
         map = L.map('map-mountpoint')
             .setView([pos.coords.latitude, pos.coords.longitude], 15);
@@ -107,7 +107,7 @@ window.addEventListener('DOMContentLoaded', () => {
         userLoc.addTo(map);
         lastreqll = [pos.coords.latitude, pos.coords.longitude];
         (async ()=> await getlandmarks())();
-        if(login) {
+        if(logged_in) {
             document.getElementById("signin").style.display = "none";
         } else {
             document.getElementById("addNewLandmark").style.display = "none";

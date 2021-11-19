@@ -9,19 +9,16 @@ presently under-specifed because we still need to figure out the spec.
 - `/signup`: A `POST` endpoint. Shall create a new user with the credentials
   specified upon success, or indicate failure.
 - `/create_landmark`: A `POST` endpoint. Shall create a new landmark based upon
-  data received in the following JSON object. This object must contain, in the
-  `authorization` field, a valid authorization token received from `/login`. If
-  no such token is provided or the token is invalid, the request is void. The
-  object shall also contain a `landmark` field, which shall contain an RFC7946
-  GeoJSON Feature object with geometry of type Point which contains the
-  properties `name` and `description`.
+  data received in a JSON object. The object shall be a RFC7946 GeoJSON Feature
+  object with geometry of type Point which contains the properties `name` and
+  `description`.
 - `/landmark/<id>`: This endpoint has multiple methods, and the semantics of
-  each shall be described:
+    each shall be described:
   - As a `GET` endpoint. If a landmark with the given ID exists, this endpoint
     shall return a GeoJSON Feature with geometry of type Point and the
-    properties `name` (string), `description` (string), `id` (string), `creator`
+    properties `name` (string), `description` (string), `id` (number), `creator`
     (string), and `reviews` (array of objects with the properties `creator`
-    (string), `id` (string), `stars` (number), `landmark_id` (string), and
+    (string), `id` (number), `stars` (number), `landmark` (number), and
     `body` (string)). It is undefined as to whether the `reviews` property
     contains all reviews for a landmark. If there is some time at which this is
     not the case, there will be a method provided for obtaining more reviews
@@ -37,13 +34,12 @@ presently under-specifed because we still need to figure out the spec.
     solely `authorization`. If that authorization corresponds to the creating
     user, the landmark shall be deleted.
 - `/landmark/<id>/add_review`: A `POST` endpoint. This endpoint shall accept a
-  JSON object containing both an `authorization` field, with a valid token, and
-  a `review` field, which contains an object containing an `body` field
-  (string), and a `stars` field (number). The `stars` field shall contain an
-  integer number between 0 and 5. The `body` field may contain arbitrary text.
+  JSON object containing an `body` field (string), and a `stars` field
+  (number). The `stars` field shall contain an integer number between 0
+  and 5. The `body` field may contain arbitrary text.
 - `/review/<id>`: This is endpoint has multiple methods.
   - As a `GET` endpoint, this returns the review specified. The review is a JSON
-    object that shall contain the `creator`, `id`, `landmark_id`, `stars`, and
+    object that shall contain the `creator`, `id`, `landmark`, `stars`, and
     `body` fields as specified in the format of `/landmark/<id>`.
   - As a `PATCH` endpoint, this endpoint shall accept an object containing an
     `authorization` and `review` field, as `/landmark/<id>/add_review`

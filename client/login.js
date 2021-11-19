@@ -1,3 +1,4 @@
+/*
 async function errormsg(){
     let username = document.getElementById("username").value;
     let password = document.getElementById("password").value;
@@ -23,6 +24,7 @@ async function errormsg(){
     // let res = JSON.parse(response.body);
     // console.log(response);
 }
-
 // document.getElementById('login-button').addEventListener("click", errormsg);
+*/
+
 
