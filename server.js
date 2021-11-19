@@ -1,4 +1,9 @@
+const { MongoClient } = require('mongodb');
+const uri = "mongodb+srv://mongouser:mongopassword@cluster0.4yb2x.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
+const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+
 const express = require('express');
+
 const fs = require('fs');
 const app = express();
 
@@ -6,31 +11,18 @@ app.use(express.static('client'));
 app.use(express.urlencoded({extended:true}));
 
 
-let secrets;
-let password;
-if (!process.env.PASSWORD) {
-    secrets = require('secrets.json');
-    password = secrets.password;
-} else {
-	password = process.env.PASSWORD;
-}
-
-const pgp = require('pg-promise');
-
-let url;
-if(!process.env.DATABASE_URL){
-    let secrets = require('secrets.json');
-    url = `postgres://${secrets.username}:${secrets.password}@localhost:${secrets.db_port}`;
-
-}
-else{
-    url = process.env.DATABASE_URL;
-}
-const db = pgp(url);
+// let secrets;
+// let password;
+// if (!process.env.PASSWORD) {
+//     secrets = require('secrets.json');
+//     password = secrets.password;
+// } else {
+// 	password = process.env.PASSWORD;
+// }
 
 
-let userJSONfile = 'userInfo.json';
-let reviewJSONfile = 'userReviews.json';
+// let userJSONfile = 'userInfo.json';
+// let reviewJSONfile = 'userReviews.json';
 
 //home page: once open localhost:3000
 app.get('/', (req, res) => {
@@ -46,25 +38,32 @@ app.get('/login', (req, res) => {
  * If user already has an account, check if the password matches that in the file.
  */
 app.post('/login', (req, res) => {
-    let userFile = JSON.parse(fs.readFileSync(userJSONfile));
     let body = req.body;
     let currUsername = body['username'];
     let currPassword = body["password"];
-    for(let i = 0 ; i < userFile.length; i++){
-        if(currUsername == userFile[i]['username']){
-            if(currPassword == userFile[i]['password']){
+    let query = {};
+    query[currUsername] = currPassword;
+
+    client.connect(err => {
+        const collection = client.db("test").collection("devices");
+        console.log(JSON.stringify(collection.findOne({})));
+        if(collection.find({'username': currUsername}) == null){
+            res.json({"ok": 3});
+            console.log("no username");
+        }
+        else if(collection.find({'username': currUsername}) != null){
+            if(collection.find({
+                'username': currUsername,
+                'password': currPassword
+            })){
                 res.json({"ok": 1});
-                return;
+                
             }
             else{
                 res.json({"ok": 2});
-                return;
             }
         }
-        else{
-            res.json({"ok": 3});
-        }
-    }
+      });
 });
 
 //once log out, redirect to the homepage
@@ -84,17 +83,15 @@ app.post('/signup', (req, res) => {
     let email = body["email"];
     let password = body["password"];
  
-    let users = [];
-    if (fs.existsSync(userJSONfile)) {
-        let someStr = fs.readFileSync(userJSONfile);
-        users = JSON.parse(someStr);
-    }
     let user = {};
     user['username'] = username;
     user['email'] = email;
     user['password'] = password;
-    users.push(user);
-    fs.writeFileSync(userJSONfile, JSON.stringify(users));
+    
+    client.connect(err => {
+        const collection = client.db("test").collection("devices");
+        collection.insertOne(user);
+      });
     res.redirect('/login');
 });
 
