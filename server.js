@@ -104,7 +104,7 @@ app.patch('/review/:id', (req, res) => {});
 app.get('/user/:id', (req,res) => {});
 app.get('/landmarks_in', (req, res) => {});
 
-//redirect to review page and show all the reviews
+//redirect to review page and show all the reviews -- needs to be fixed
 app.get('/review/:id', (req,res) => {
     res.redirect('/user-interface.html');
 });
@@ -123,18 +123,14 @@ app.post('/review/:id', (req,res) => {
     let landmark = body['name'];
     let review = body["review"];
     let rating = body["rating"];
- 
-    let userReviews = [];
-    if (fs.existsSync(reviewJSONfile)) {
-        let someStr = fs.readFileSync(reviewJSONfile);
-        userReviews = JSON.parse(someStr);
-    }
     let userReview = {};
     userReview['name'] = landmark;
     userReview['review'] = review;
     userReview['rating'] = rating;
-    userReviews.push(userReview);
-    fs.writeFileSync(reviewJSONfile, JSON.stringify(userReviews));
+    client.connect(err => {
+        const collection = client.db("ReviewDB").collection("UserReviews");
+        collection.insertOne(userReview);
+      });
 });
 
 //delete a review from the JSON file
