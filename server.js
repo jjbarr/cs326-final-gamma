@@ -37,33 +37,27 @@ app.get('/login', (req, res) => {
 /* Check if user already signed up. If not, ask user to sign up.
  * If user already has an account, check if the password matches that in the file.
  */
-app.post('/login', (req, res) => {
+app.post('/login', async (req, res) => {
     let body = req.body;
     let currUsername = body['username'];
     let currPassword = body["password"];
-    let query = {};
-    query[currUsername] = currPassword;
 
-    client.connect(err => {
-        const collection = client.db("test").collection("devices");
-        console.log(JSON.stringify(collection.findOne({})));
-        if(collection.find({'username': currUsername}) == null){
-            res.json({"ok": 3});
-            console.log("no username");
+    const collection = client.db("test").collection("devices");
+    
+    const authen = await collection.findOne({"username": currUsername, "password": currPassword});
+    const usernameValue = await collection.findOne({"username": currUsername});
+    if(usernameValue == null){
+        res.json({"ok": 3});
+    }
+    else if(usernameValue != null){
+        if(authen){
+            res.json({"ok": 1});
+            
         }
-        else if(collection.find({'username': currUsername}) != null){
-            if(collection.find({
-                'username': currUsername,
-                'password': currPassword
-            })){
-                res.json({"ok": 1});
-                
-            }
-            else{
-                res.json({"ok": 2});
-            }
+        else{
+            res.json({"ok": 2});
         }
-      });
+    }
 });
 
 //once log out, redirect to the homepage
@@ -76,7 +70,7 @@ app.get('/signup', (req, res) => {
     res.redirect('signup.html');
 });
 
-//user put in username and passwords to sign up, and save user info in a JSON file
+//user put in username and passwords to sign up, and save user info to db
 app.post('/signup', (req, res) => {
     let body = req.body;
     let username = body['username'];
@@ -109,15 +103,16 @@ app.get('/review/:id', (req,res) => {
     res.redirect('/user-interface.html');
 });
 
+//read reviews from reviews db and display in the user interface
 app.get("/loadallreviews", async (req, res) => {
-    let reviews =[];
-    if (fs.existsSync(reviewJSONfile)) {
-        reviews = JSON.parse(fs.readFileSync(reviewJSONfile));
-    }
-    res.send(JSON.stringify(reviews));
+    const collection = client.db("ReviewDB").collection("UserReviews");
+
+    collection.find().toArray(function(err, docs) {
+        res.send(JSON.stringify(docs));
+    });
 });
 
-//save all reviews to a JSON file
+//save all reviews to reviews db
 app.post('/review/:id', (req,res) => {
     let body = req.body;
     let landmark = body['name'];
@@ -133,7 +128,7 @@ app.post('/review/:id', (req,res) => {
       });
 });
 
-//delete a review from the JSON file
+//delete a review from db
 app.post('/deletereview', async (req,res) => {
     let reviews = JSON.parse(fs.readFileSync(reviewJSONfile));
     let name = req.body.name;
@@ -150,7 +145,8 @@ app.post('/deletereview', async (req,res) => {
     fs.writeFileSync(reviewJSONfile, JSON.stringify(reviews));
 });
 
-
+client.connect(err => {
+    const port = process.env.PORT || 3000;
+    app.listen(port, () => console.log('listening on port 3000...'));
+});
 //port
-const port = process.env.PORT || 3000;
-app.listen(port, () => console.log('listening on port 3000...'));
