@@ -144,6 +144,7 @@ window.addEventListener('DOMContentLoaded', async () => {
                         }
                     })
                 });
+                await getlandmarks();
                 if(!resp.ok) {
                     alert('Something went wrong submitting the landmark!');
                 } else {
