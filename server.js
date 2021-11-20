@@ -84,7 +84,6 @@ app.get('/signup', (req, res) => {
     }
 });
 
-//user put in username and passwords to sign up, and save user info in a JSON file
 app.post('/signup', async (req, res) => {
     if(!req.isAuthenticated()) {
         try {
@@ -132,40 +131,70 @@ app.post('/create_landmark', async (req, res) => {
         }
     }
 });
+
+/*turns a landmark from the database into geojson format.
+ * return object, not JSON*/
+async function landmarkJSON(landmark) {
+    let reviews = await db.manyOrNone(
+        'SELECT * FROM reviews WHERE landmark=${id}',
+        {id: parseInt(landmark.id)});
+    return {
+        type: 'Feature',
+        geometry: {
+            type: 'Point',
+            coordinates: [landmark.lat, landmark.long]
+        },
+        properties: {
+            name: landmark.name,
+            id: landmark.id,
+            creator: landmark.creator,
+            reviews: reviews
+        }
+    };
+}
+
 app.get('/landmark/:id', async (req, res) => {
     try {
         let landmark = await db.one('SELECT * FROM landmarks WHERE id=${id}',
                                     {id: parseInt(req.params.id)});
-        let reviews = await db.manyOrNone(
-            'SELECT * FROM reviews WHERE landmark=${id}',
-            {id: parseInt(req.params.id)});
-        res.json({
-            type: 'Feature',
-            geometry: {
-                type: 'Point',
-                coordinates: [landmark.lat, landmark.long]
-            },
-            properties: {
-                name: landmark.name,
-                id: landmark.id,
-                creator: landmark.creator,
-                reviews: reviews
-            }
-        });
+        res.json(await landmarkJSON(landmark));
     } catch (e) {
         res.sendStatus(404);
     }
 });
 app.patch('/landmark/:id', (req,res) => {res.sendStatus(500);});
 app.delete('/landmark/:id', (req,res) => {res.sendStatus(500);});
-app.post('/landmark/:id/add_review', (req,res) => {});
+app.post('/landmark/:id/add_review', (req,res) => {
+
+});
 app.patch('/review/:id', (req, res) => {});
 app.get('/user/:id', (req,res) => {});
-app.get('/landmarks_in', (req, res) => {});
+app.get('/landmarks_in', async (req, res) => {
+    //this is really bad in terms of numbers of queries. Should be fixed if this
+    //is beyond a prototype. Which can probably be done with sufficient joins,
+    //natch.
+    const lat1 = parseFloat(req.query.lat1);
+    const long1 = parseFloat(req.query.long1);
+    const lat2 = parseFloat(req.query.lat2);
+    const long2 = parseFloat(req.query.long2);
+    if(isNaN(lat1) || isNaN(long1) || isNaN(lat2) || isNaN(long2)){
+        res.sendStatus(400);
+        return;
+    }
+    let lmks = await db.manyOrNone('SELECT * FROM landmarks '
+                                   + 'WHERE lat >= ${lat1} '
+                                   + 'AND lat <= ${lat2} '
+                                   + 'AND long >= ${long1} '
+                                   + 'AND long <= ${long2}', {
+                                       lat1: Math.min(lat1, lat2),
+                                       lat2: Math.max(lat1, lat2),
+                                       long1: Math.min(long1, long2),
+                                       long2: Math.max(long1, long2)
+                                   });
+    res.json(await Promise.all(lmks.map((lmk) => landmarkJSON(lmk))));
+});
 
-//redirect to review page and show all the reviews
-app.get('/review/:id', (req,res) => {
-
+app.get('/review/:id', async (req,res) => {    
 });
 
 //even for me this is gross

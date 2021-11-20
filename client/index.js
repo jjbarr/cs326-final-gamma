@@ -1,7 +1,6 @@
 let map = null;
-let userLoc = null;
-let lastreqll = null;
-
+let userLocMarker = null;
+let userLoc = [];
 let landmarks = {};
 
 async function getlandmarks() {
@@ -21,6 +20,7 @@ async function getlandmarks() {
             return r;
         })
         .forEach((lmk) => {
+            console.log(`landmark ${lmk}`);
             let landmark = L.marker(lmk.geometry.coordinates);
             landmark.addTo(map);
             let popup = L.popup({keepInView:true, closeButton: true})
@@ -45,8 +45,7 @@ async function getlandmarks() {
                             review.appendChild((()=>{
                                 const top = document.createElement('span');
                                 top.appendChild((()=>{
-                                    const user = document.createElement('a');
-                                    user.href = `/user/${rev.creator}`;
+                                    const user = document.createElement('span');
                                     user.innerText = rev.creator;
                                     return user;
                                 })());
@@ -90,34 +89,70 @@ async function getlandmarks() {
         });
 }
 
-window.addEventListener('DOMContentLoaded', async () => {
-    let logged_in = (await (await fetch('/logged_in')).json()).result;
 
+
+window.addEventListener('DOMContentLoaded', async () => {
+    // Yes, I *know* that there are better ways to know about whether or not
+    // we're logged in on the front end.
+    let logged_in = (await (await fetch('/logged_in')).json()).result;
+    if(logged_in) {
+        document.getElementById("signin").style.display = "none";
+    } else {
+        document.getElementById("add-new-landmark").style.display = "none";
+        document.getElementById("user-menu").style.display = "none";
+    }
     navigator.geolocation.getCurrentPosition((pos) => {
-        map = L.map('map-mountpoint')
-            .setView([pos.coords.latitude, pos.coords.longitude], 15);
+        userLoc = [pos.coords.latitude, pos.coords.longitude];
+        map = L.map('map-mountpoint').setView(userLoc, 15);
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">\OpenStreetMap</a> contributors'})
-            .addTo(map);
-        userLoc = L.circleMarker([pos.coords.latitude,pos.coords.longitude], {
-            color: '#ffffff',
-            fillOpacity: 1.0,
-            fillColor: '#3388ff'
-        });
-        userLoc.addTo(map);
-        lastreqll = [pos.coords.latitude, pos.coords.longitude];
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">\OpenStreetMap</a> contributors'
+        }).addTo(map);
+        userLocMarker =
+            L.circleMarker(userLoc, {
+                color: '#ffffff',
+                fillOpacity: 1.0,
+                fillColor: '#3388ff'
+            });
+        userLocMarker.addTo(map);
         (async ()=> await getlandmarks())();
-        if(logged_in) {
-            document.getElementById("signin").style.display = "none";
-        } else {
-            document.getElementById("addNewLandmark").style.display = "none";
-            document.getElementById("user-menu").style.display = "none";
-        }
         navigator.geolocation.watchPosition((pos) => {
-            userLoc.setLatLng(new L.LatLng(pos.coords.latitude,
-                                           pos.coords.longitude));
+            userLocMarker.setLatLng(new L.LatLng(pos.coords.latitude,
+                                                 pos.coords.longitude));
         });
+        document.getElementById('confirm-new-landmark')
+            .addEventListener('click', async () => {
+                const name = document.getElementById('landmark-name').value;
+                const description = document
+                      .getElementById('landmark-description').value;
+                if(!name || !description){
+                    alert('The landmark must have a name and description.');
+                    return;
+                }
+                let resp = await fetch('/create_landmark', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    credentials: 'same-origin',
+                    body: JSON.stringify({
+                        type: 'Feature',
+                        geometry: {
+                            type: 'Point',
+                            coordinates: userLoc
+                        },
+                        'properties': {
+                            name: name,
+                            description: description
+                        }
+                    })
+                });
+                if(!resp.ok) {
+                    alert('Something went wrong submitting the landmark!');
+                } else {
+                    bootstrap.Modal.getInstance(
+                        document.getElementById('new-landmark-modal')).hide();
+                }
+            });
         map.on('zoomend', () => (async () => await getlandmarks())());
         map.on('moveend', () => (async () => await getlandmarks())());
     });
+    
 });
