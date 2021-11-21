@@ -2,6 +2,8 @@ let map = null;
 let userLocMarker = null;
 let userLoc = [];
 let landmarks = {};
+let landmarks_on_map = {};
+let selected_landmark = null;
 
 async function getlandmarks() {
     //we should actually unbind landmarks and GC them, but for now we'll assume
@@ -15,77 +17,41 @@ async function getlandmarks() {
         `/landmarks_in?lat1=${lat1}&long1=${long1}&lat2=${lat2}&long2=${long2}`))
      .json())
         .filter((lmk) => {
-            let r = landmarks[lmk.properties.id];
-            landmarks[lmk.properties.id]=true;
-            return r;
+            let v = landmarks[lmk.properties.id];
+            landmarks[lmk.properties.id]=lmk;
+            return v?true:false;
         })
         .forEach((lmk) => {
             console.log(`landmark ${lmk}`);
             let landmark = L.marker(lmk.geometry.coordinates);
             landmark.addTo(map);
-            let popup = L.popup({keepInView:true, closeButton: true})
-                .setContent(() => {
-                    const content = document.createElement('div');
-                    content.classList.add('container-fluid');
-                    content.appendChild((()=>{
-                        const h = document.createElement('h3');
-                        h.innerText = lmk.properties.name;
-                        return h;
-                    })());
-                    content.appendChild(document.createElement('hr'));
-                    content.appendChild((()=>{
-                        const desc = document.createElement('div');
-                        desc.innerText = lmk.properties.description;
-                        return desc;
-                    })());
-                    content.appendChild((()=>{
-                        const reviews = document.createElement('div');
-                        lmk.properties.review.forEach((rev) => {
-                            const review = document.createElement('div');
-                            review.appendChild((()=>{
-                                const top = document.createElement('span');
-                                top.appendChild((()=>{
-                                    const user = document.createElement('span');
-                                    user.innerText = rev.creator;
-                                    return user;
-                                })());
-                                top.appendChild(
-                                    document.createTextNode(
-                                        Array(rev.stars).fill('★').join('')));
-                                return top;
-                            })());
-                            review.appendChild((()=>{
-                                const body = document.createElement('div');
-                                body.innerText = rev.body;
-                                return body;
-                            })());
-                            reviews.appendChild(review);
-                        });
-                        return reviews;
-                    })());
-                    content.appendChild((()=>{
-                        const reviewform = document.createElement('form');
-                        const title = document.createElement('input');
-                        title.setAttribute('type','text');
-                        title.setAttribute('placeholder','Title');
-                        reviewform.appendChild(title);
-                        const stars = document.createElement('input');
-                        stars.setAttribute('type','number');
-                        stars.setAttribute('min', '1');
-                        stars.setAttribute('max', '5');
-                        reviewform.appendChild(stars);
-                        const body = document.createElement('textarea');
-                        body.setAttribute('placeholder', 'your review');
-                        reviewform.appendChild(body);
-                        const add = document.createElement('input');
-                        add.setAttribute('type', 'button');
-                        add.setAttribute('value', 'Submit Review');
-                        add.classList.add(['btn', 'btn-primary']);
-                        reviewform.appendChild(add);
-                        return reviewform;
-                    })());
-                    return content;
+            landmarks_on_map[lmk.properties.id] = landmark;
+            landmark.on('click', () => {
+                selected_landmark = lmk.properties.id;
+                lmk = landmarks[lmk.properties.id];
+                document.getElementById('landmark-info-title')
+                    .innerText = lmk.properties.name;
+                document.getElementById('landmark-info-description')
+                    .innerText = lmk.properties.description;
+                const revdisplay =
+                      document.getElementById('landmark-info-reviews');
+                while (revdisplay.firstChild)
+                    revdisplay.removeChild(revdisplay.firstChild);
+                lmk.properties.reviews.forEach((rev) => {
+                    const review = document.createElement('li');
+                    review.classList.add(['list-group-item']);
+                    const top = document.createElement('div');
+                    const stars = Array(rev.stars).fill('★').join('');
+                    top.innerText = `${rev.creator} - ${stars}`;
+                    review.appendChild(top);
+                    const body = document.createElement('div');
+                    body.innerText = rev.body;
+                    review.appendChild(body);
+                    revdisplay.appendChild(review);
                 });
+                bootstrap.Modal.getOrCreateInstance(
+                    document.getElementById('landmark-info-modal')).show();
+            });
         });
 }
 
@@ -93,7 +59,8 @@ async function getlandmarks() {
 
 window.addEventListener('DOMContentLoaded', async () => {
     // Yes, I *know* that there are better ways to know about whether or not
-    // we're logged in on the front end.
+    // we're logged in on the front end. You, the professors, don't seem to want
+    // me to use them.
     let logged_in = (await (await fetch('/logged_in')).json()).result;
     if(logged_in) {
         document.getElementById("signin").style.display = "none";
@@ -101,7 +68,7 @@ window.addEventListener('DOMContentLoaded', async () => {
         document.getElementById("add-new-landmark").style.display = "none";
         document.getElementById("user-menu").style.display = "none";
     }
-    navigator.geolocation.getCurrentPosition((pos) => {
+    navigator.geolocation.getCurrentPosition(async (pos) => {
         userLoc = [pos.coords.latitude, pos.coords.longitude];
         map = L.map('map-mountpoint').setView(userLoc, 15);
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -114,11 +81,11 @@ window.addEventListener('DOMContentLoaded', async () => {
                 fillColor: '#3388ff'
             });
         userLocMarker.addTo(map);
-        (async ()=> await getlandmarks())();
         navigator.geolocation.watchPosition((pos) => {
             userLocMarker.setLatLng(new L.LatLng(pos.coords.latitude,
                                                  pos.coords.longitude));
         });
+        await getlandmarks();
         document.getElementById('confirm-new-landmark')
             .addEventListener('click', async () => {
                 const name = document.getElementById('landmark-name').value;
@@ -128,7 +95,7 @@ window.addEventListener('DOMContentLoaded', async () => {
                     alert('The landmark must have a name and description.');
                     return;
                 }
-                let resp = await fetch('/create_landmark', {
+                let res = await fetch('/create_landmark', {
                     method: 'POST',
                     headers: {'Content-Type': 'application/json'},
                     credentials: 'same-origin',
@@ -138,22 +105,45 @@ window.addEventListener('DOMContentLoaded', async () => {
                             type: 'Point',
                             coordinates: userLoc
                         },
-                        'properties': {
+                        properties: {
                             name: name,
                             description: description
                         }
                     })
                 });
                 await getlandmarks();
-                if(!resp.ok) {
+                if(!res.ok) {
                     alert('Something went wrong submitting the landmark!');
                 } else {
-                    bootstrap.Modal.getInstance(
+                    bootstrap.Modal.getOrCreateInstance(
                         document.getElementById('new-landmark-modal')).hide();
+                }
+            });
+        document.getElementById('landmark-info-add-review')
+            .addEventListener('click', async () => {
+                if(!selected_landmark) return;
+                let id = landmarks[selected_landmark].properties.id;
+                let res = await fetch(`/landmark/${id}/add_review`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    credentials: 'same-origin',
+                    body: JSON.stringify({
+                        stars: document
+                            .getElementById('landmark-info-review-stars').value,
+                        body: document
+                            .getElementById('landmark-info-review-body').value
+                    })
+                });
+                if(!res.ok) {
+                    alert('unable to submit review! Do you already have one?');
+                } else {
+                    alert('review submitted!');
+                    await getlandmarks();
+                    bootstrap.Modal.getOrCreateInstance(
+                        document.getElementById('landmark-info-modal')).hide();
                 }
             });
         map.on('zoomend', () => (async () => await getlandmarks())());
         map.on('moveend', () => (async () => await getlandmarks())());
-    });
-    
+    }); 
 });

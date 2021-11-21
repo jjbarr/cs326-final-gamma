@@ -145,9 +145,10 @@ async function landmarkJSON(landmark) {
             coordinates: [landmark.lat, landmark.long]
         },
         properties: {
-            name: landmark.name,
+            name: landmark.lname,
             id: landmark.id,
             creator: landmark.creator,
+            description: landmark.description,
             reviews: reviews
         }
     };
@@ -164,11 +165,28 @@ app.get('/landmark/:id', async (req, res) => {
 });
 app.patch('/landmark/:id', (req,res) => {res.sendStatus(500);});
 app.delete('/landmark/:id', (req,res) => {res.sendStatus(500);});
-app.post('/landmark/:id/add_review', (req,res) => {
-
+app.post('/landmark/:id/add_review', async (req,res) => {
+    if(!req.isAuthenticated()) {
+        res.sendStatus(401);
+    } else {
+        try {
+            await db.none('INSERT INTO reviews(creator,landmark,stars,body) '
+                          + 'VALUES(${creator}, ${landmark}, '
+                          + '${stars}, ${body})', {
+                              creator: req.user,
+                              landmark: parseInt(req.params.id),
+                              stars: req.body.stars,
+                              body: req.body.body
+                          });
+        } catch (e) {
+            res.sendStatus(400);
+            return;
+        }
+        res.sendStatus(200);
+    }
 });
-app.patch('/review/:id', (req, res) => {});
-app.get('/user/:id', (req,res) => {});
+app.patch('/review/:id', (req, res) => {res.sendstatus(500);});
+app.get('/user/:id', (req,res) => {res.sendstatus(500);});
 app.get('/landmarks_in', async (req, res) => {
     //this is really bad in terms of numbers of queries. Should be fixed if this
     //is beyond a prototype. Which can probably be done with sufficient joins,
@@ -194,8 +212,7 @@ app.get('/landmarks_in', async (req, res) => {
     res.json(await Promise.all(lmks.map((lmk) => landmarkJSON(lmk))));
 });
 
-app.get('/review/:id', async (req,res) => {    
-});
+app.get('/review/:id', async (req,res) => {res.sendStatus(500);});
 
 //even for me this is gross
 app.get('/logged_in', (req,res) => {
