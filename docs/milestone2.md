@@ -35,7 +35,7 @@ presently under-specifed because we still need to figure out the spec.
     user, the landmark shall be deleted.
 - `/landmark/<id>/add_review`: A `POST` endpoint. This endpoint shall accept a
   JSON object containing an `body` field (string), and a `stars` field
-  (number). The `stars` field shall contain an integer number between 0
+  (number). The `stars` field shall contain an integer number between 1
   and 5. The `body` field may contain arbitrary text.
 - `/review/<id>`: This is endpoint has multiple methods.
   - As a `GET` endpoint, this returns the review specified. The review is a JSON
