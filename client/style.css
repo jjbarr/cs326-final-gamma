@@ -1,4 +1,6 @@
 /*we need to force the map fullscreen*/
+
+
 body, html {
     min-height: 100%;
     height: 100%;
@@ -94,4 +96,20 @@ table, th, td
 }
 th {
     font-weight:bold;
+}
+
+.star::after{
+    position: relative;
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    content: "\f005";
+    color: #ccc;
+}
+
+.star.full::after{
+    position: relative;
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    content: "\f005";
+    color: #f8ce0b;
 }

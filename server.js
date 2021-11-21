@@ -93,14 +93,19 @@ app.post('/create_landmark', (req, res) => {});
 app.get('/landmark/:id', (req, res) => {});
 app.patch('/landmark/:id', (req,res) => {});
 app.delete('/landmark/:id', (req,res) => {});
-app.post('/landmark/:id/add_review', (req,res) => {});
+
+app.post('/landmark/:id/add_review', async (req,res) => {
+
+});
+
 app.patch('/review/:id', (req, res) => {});
 app.get('/user/:id', (req,res) => {});
 app.get('/landmarks_in', (req, res) => {});
 
 //redirect to review page and show all the reviews -- needs to be fixed
 app.get('/review/:id', (req,res) => {
-    res.redirect('/user-interface.html');
+    //res.redirect('/user-interface.html');
+    res.redirect('stars.html');
 });
 
 //read reviews from reviews db and display in the user interface
@@ -114,14 +119,25 @@ app.get("/loadallreviews", async (req, res) => {
 
 //save all reviews to reviews db
 app.post('/review/:id', (req,res) => {
+    // let body = req.body;
+    // let landmark = body['name'];
+    // let review = body["review"];
+    // let rating = body["rating"];
+    // let userReview = {};
+    // userReview['name'] = landmark;
+    // userReview['review'] = review;
+    // userReview['rating'] = rating;
+    // client.connect(err => {
+    //     const collection = client.db("ReviewDB").collection("UserReviews");
+    //     collection.insertOne(userReview);
+    //   });
+
     let body = req.body;
-    let landmark = body['name'];
-    let review = body["review"];
     let rating = body["rating"];
+    let review = body["review"];
     let userReview = {};
-    userReview['name'] = landmark;
-    userReview['review'] = review;
     userReview['rating'] = rating;
+    userReview['review'] = review;
     client.connect(err => {
         const collection = client.db("ReviewDB").collection("UserReviews");
         collection.insertOne(userReview);

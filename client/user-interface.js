@@ -1,5 +1,4 @@
 // const { traceDeprecation } = require("process");
-
 window.addEventListener('DOMContentLoaded', ()=>{   
     document.getElementById('remove-btn').addEventListener('click', deleteRow);
     document.getElementById('return-btn').addEventListener('click', returnHome);
@@ -68,13 +67,28 @@ function render(JSONObj){
         let tr = document.createElement('tr');
         for(let j = 0; j < 3; j++){
             let td = document.createElement('td');
-            td.innerHTML = reviews[i][labels[j]];
+            if(j == 2){
+                let stars = [];
+                for (let k = 1; k <=5 ; k++){
+                    let s = document.createElement('div');
+                    s.classList.add('star');
+                    td.appendChild(s);
+                    stars.push(s);
+                    console.log(stars);
+                }
+                let starCount = parseInt(reviews[i][labels[2]]);
+                stars.forEach((star, a) => {
+                    star.classList.toggle('full', a <= starCount - 1);
+                });
+            }else{
+                td.innerHTML = reviews[i][labels[j]];
+            }
             tr.appendChild(td);
+            //let starCount = parseInt(reviews[i][labels[2]]);
+            //getRatings(starCount);
         }
         tableBody.appendChild(tr); 
     }
     table.appendChild(tableBody);
     element.appendChild(table);
 }
-
-  

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang = "en" dir= "ltr">
+    <head>
+        <meta charset = "utf-8">
+        <title> Password Strength | CodingNepal</title>
+        <link rel = "stylesheet" href = "starts.css">
+        <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" 
+          integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" 
+          crossorigin="anonymous"/>
+        <script src="stars.js"></script>
+    </head>
+    <body>
+        <div class = "container">
+            <div class = "post">
+                <div class = "text">Thanks for rating us!</div>
+            </div>
+            <div class = "star-widget">
+                <input type = "radio" name = "rate" id = "rate-5">
+                <label for = "rate-5" class = "far fa-star"></label>
+                <input type = "radio" name = "rate" id = "rate-4">
+                <label for = "rate-4" class = "far fa-star"></label>
+                <input type = "radio" name = "rate" id = "rate-3">
+                <label for = "rate-3" class = "far fa-star"></label>
+                <input type = "radio" name = "rate" id = "rate-2">
+                <label for = "rate-2" class = "far fa-star"></label>
+                <input type = "radio" name = "rate" id = "rate-1">
+                <label for = "rate-1" class = "far fa-star"></label>
+                <form actioin = "#">
+                    <header></header>
+                    <div class = "textarea">
+                        <textarea cols = "30" placeholder="Describe your experience..." id = "review"></textarea>
+                    </div>
+                    <div class = "btn" id = "post">
+                        <button type = "submit">Post</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <script>
+            const btn = document.querySelector("button");
+            const post = document.querySelector(".post");
+            const widget = document.querySelector(".star-widget");
+            btn.onclick = ()=>{
+                widget.style.display = "none";
+                post.style.display = "block";
+                return false;
+            }
+        </script>
+    </body>
+</html>
