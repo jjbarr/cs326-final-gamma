@@ -20,7 +20,8 @@ CREATE TABLE reviews (
        stars INTEGER,
        body VARCHAR,
        FOREIGN KEY(creator) REFERENCES users(uname),
-       FOREIGN KEY(landmark) REFERENCES landmarks(id)
+       FOREIGN KEY(landmark) REFERENCES landmarks(id),
+       UNIQUE(creator,landmark)
 );
 
 CREATE INDEX coords ON landmarks (lat,long);
