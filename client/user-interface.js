@@ -71,10 +71,9 @@ function render(JSONObj){
                 let stars = [];
                 for (let k = 1; k <=5 ; k++){
                     let s = document.createElement('div');
-                    s.classList.add('star');
+                    s.setAttribute("class", "fas fa-star");
                     td.appendChild(s);
                     stars.push(s);
-                    console.log(stars);
                 }
                 let starCount = parseInt(reviews[i][labels[2]]);
                 stars.forEach((star, a) => {
@@ -84,8 +83,6 @@ function render(JSONObj){
                 td.innerHTML = reviews[i][labels[j]];
             }
             tr.appendChild(td);
-            //let starCount = parseInt(reviews[i][labels[2]]);
-            //getRatings(starCount);
         }
         tableBody.appendChild(tr); 
     }
