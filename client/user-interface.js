@@ -60,25 +60,23 @@ function render(JSONObj){
     let reviews = JSON.parse(JSON.stringify(JSONObj));
 
     let element = document.getElementById('table');
-    let table = document.createElement('table');
     let tableBody = document.createElement('tbody');
-    table.appendChild(tableBody);
     for(let i = 0 ; i < reviews.length; i++){
         let tr = document.createElement('tr');
         for(let j = 0; j < 3; j++){
             let td = document.createElement('td');
-            if(j == 2){
+            if(j == 2){ // Add stars Rating at that column
                 let stars = [];
                 for (let k = 1; k <=5 ; k++){
                     let s = document.createElement('div');
                     s.setAttribute("class", "fas fa-star");
                     td.appendChild(s);
                     stars.push(s);
-                }
+                } // Add five stars
                 let starCount = parseInt(reviews[i][labels[2]]);
                 stars.forEach((star, a) => {
                     star.classList.toggle('full', a <= starCount - 1);
-                });
+                }); // Transform the rating number into stars 
             }else{
                 td.innerHTML = reviews[i][labels[j]];
             }
@@ -86,6 +84,5 @@ function render(JSONObj){
         }
         tableBody.appendChild(tr); 
     }
-    table.appendChild(tableBody);
-    element.appendChild(table);
+    element.appendChild(tableBody);
 }
