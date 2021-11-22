@@ -50,7 +50,10 @@
         <a class="navbar-brand" href="#">Landmarkster</a>
         <div class="align-self-end d-inline-flex">
           <div class="nav-item">
-            <a class="nav-link" id='signin' href='/login'>Log in</a>
+            <button class="btn btn-link" id='signin'
+                    data-bs-toggle='modal' data-bs-target='#login-modal'>
+              Log in
+            </button>
           </div>
           <div class="nav-item px-2">
             <button class="btn btn-primary" id="add-new-landmark"
@@ -73,7 +76,7 @@
                 </a>
               </li>
               <li>
-                <a class="dropdown-item" href="/logout">Sign out</a>
+                <a class="dropdown-item" id='logout'>Sign out</a>
               </li>
             </ul>
           </div>
@@ -84,8 +87,8 @@
         <div id="map-mountpoint" class="h-100"></div>
       </div>
     </div>
-    <!-- this is our modal popup. It's not going to actually ever appear on the
-    page here literally.-->
+    <!-- this is our add landmark modal. It's not going to actually ever appear
+    on the page here literally.-->
     <div class='modal fade' id='new-landmark-modal' tabindex='-1'
          aria-labelledby='add-landmark-label' aria-hidden='true'>
       <div class='modal-dialog'>
@@ -207,6 +210,92 @@
               <tbody id='userpage-reviews'>
               </tbody>
             </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--login modal-->
+    <div class='modal fade' id='login-modal' tabindex='-1'
+         aria-labelledby='login-modal-label' aria-hidden='true'>
+      <div class='modal-dialog'>
+        <div class='modal-content'>
+          <div class='modal-header'>
+            <h3 class='modal-title' id='login-modal-label'>Log In</h3>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+          </div>
+          <div class='modal-body'>
+            <form>
+              <div class='mb-3'>
+                <label for='login-username' class='form-label'>
+                  Username
+                </label>
+                <input type='text' class='form-control' id='login-username'
+                       placeholder="Username">
+              </div>
+              <div class='mb-3'>
+                <label for='login-password' class='form-label'>
+                  Password
+                </label>
+                <input type='password' class='form-control' id='login-password'
+                       placeholder='Password'>
+              </div>
+            </form>
+            <p>
+              Don't have an account?
+              <a href="#" id='signup-modal-link'>Register here</a>
+            </p>
+          </div>
+          <div class='modal-footer'>
+            <button type="button" class="btn btn-secondary"
+                    data-bs-dismiss="modal">
+              Cancel
+            </button>
+            <button type="button" id='confirm-login'
+                    class="btn btn-primary">
+              Log In!
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--Signup modal-->
+    <div class='modal fade' id='signup-modal' tabindex='-1'
+         aria-labelledby='signup-modal-label' aria-hidden='true'>
+      <div class='modal-dialog'>
+        <div class='modal-content'>
+          <div class='modal-header'>
+            <h3 class='modal-title' id='signup-modal-label'>Sign Up</h3>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+          </div>
+          <div class='modal-body'>
+            <form>
+              <div class='mb-3'>
+                <label for='signup-username' class='form-label'>
+                  Username
+                </label>
+                <input type='text' class='form-control' id='signup-username'
+                       placeholder="Username">
+              </div>
+              <div class='mb-3'>
+                <label for='signup-password' class='form-label'>
+                  Password
+                </label>
+                <input type='password' class='form-control' id='signup-password'
+                       placeholder='Password'>
+              </div>
+            </form>
+          </div>
+          <div class='modal-footer'>
+            <button type="button" class="btn btn-secondary"
+                    data-bs-dismiss="modal">
+              Cancel
+            </button>
+            <button type="button" id='confirm-signup'
+                    class="btn btn-primary">
+              Sign Up!
+            </button>
           </div>
         </div>
       </div>

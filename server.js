@@ -1,3 +1,5 @@
+//This is prototype quality
+
 const express = require('express');
 const expressSession = require('express-session');
 const passport = require('passport');
@@ -35,7 +37,6 @@ passport.use(strategy);
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(express.json());
-app.use(express.urlencoded({'extended':true}));
 app.use(express.static('client'));
 
 passport.serializeUser((user, done) => {
@@ -51,53 +52,34 @@ app.get('/', (req, res) => {
     res.redirect('index.html');
 });
 
-//redirect to login page
-app.get('/login', (req, res) => {
-    if(req.isAuthenticated()) {
-        res.redirect('/');
-    } else {
-        res.redirect('login.html');
-    }
-});
-
-/* Check if user already signed up. If not, ask user to sign up.
- * If user already has an account, check if the password matches that in the file.
- */
 app.post('/login',
-         passport.authenticate('local', {
-             'successRedirect': '/',
-             'failureRedirect': '/login'
-         }));
+         passport.authenticate('local'),
+         (req,res) => {
+             res.sendStatus(200);
+         });
 
 //once log out, redirect to the homepage
-app.get('/logout', (req, res) => {
+app.post('/logout', (req, res) => {
     req.logout();
-    res.redirect('/');
-});
-
-//redirect to the signup page
-app.get('/signup', (req, res) => {
-    if(req.isAuthenticated()) {
-        res.redirect('/');
-    } else {
-        res.redirect('signup.html');
-    }
+    res.sendStatus(200);
 });
 
 app.post('/signup', async (req, res) => {
-    if(!req.isAuthenticated()) {
+    if(!req.body.username || !req.body.password) {
+        res.sendStaus(400);
+    } else if(!req.isAuthenticated()) {
         try {
             await db.none(
                 'INSERT INTO users(uname, password)' +
                     ' VALUES(${username},${password})',
                 req.body);
         } catch(e) {
-            //I have no clue how to handle this right now. I'll figure it out
-            //another time.
+            res.sendStatus(400);
+            return;
         }
-        res.redirect('/login');
+        res.sendStatus(200);
     } else {
-        res.redirect('/');
+        res.sendStatus(400);
     }
 });
 
@@ -199,7 +181,6 @@ app.patch('/landmark/:id', async (req,res) => {
                           desc: req.body.properties.description
                       });
     } catch(e) {
-        console.log(e);
         res.sendStatus(400);
         return;
     }

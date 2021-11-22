@@ -286,17 +286,24 @@ function showuser(user) {
         document.getElementById('userpage-modal')).show();
 }
 
+function set_login_status(logged_in) {
+    if(logged_in) {
+        document.getElementById("signin").style.display = "none";
+        document.getElementById("add-new-landmark").style.display = "inline";
+        document.getElementById("user-menu").style.display = "inline";
+    } else {
+        document.getElementById("signin").style.display = "inline";
+        document.getElementById("add-new-landmark").style.display = "none";
+        document.getElementById("user-menu").style.display = "none";
+    }
+}
+
 window.addEventListener('DOMContentLoaded', async () => {
     // Yes, I *know* that there are better ways to know about whether or not
     // we're logged in on the front end. You, the professors, don't seem to want
     // me to use them.
     let logged_in = (await (await fetch('/logged_in')).json()).result;
-    if(logged_in) {
-        document.getElementById("signin").style.display = "none";
-    } else {
-        document.getElementById("add-new-landmark").style.display = "none";
-        document.getElementById("user-menu").style.display = "none";
-    }
+    set_login_status(logged_in);
     navigator.geolocation.getCurrentPosition(async (pos) => {
         userLoc = [pos.coords.latitude, pos.coords.longitude];
         map = L.map('map-mountpoint');
@@ -383,6 +390,67 @@ window.addEventListener('DOMContentLoaded', async () => {
             .addEventListener('click', async() => {
                 let user = await (await fetch('/self')).json();
                 showuser(user);
+            });
+        document.getElementById('logout')
+            .addEventListener('click', async () => {
+                await fetch('/logout', {
+                    method:'POST',
+                    credentials: 'same-origin'
+                });
+                logged_in = false;
+                set_login_status(logged_in);
+            });
+        document.getElementById('signup-modal-link')
+            .addEventListener('click', () => {
+                bootstrap.Modal.getOrCreateInstance(
+                    document.getElementById('login-modal')).hide();
+                bootstrap.Modal.getOrCreateInstance(
+                    document.getElementById('signup-modal')).show();
+            });
+        document.getElementById('confirm-login')
+            .addEventListener('click', async () => {
+                let res = await fetch('/login', {
+                    method: 'POST',
+                    credentials: 'same-origin',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({
+                        username:
+                        document.getElementById('login-username').value,
+                        password:
+                        document.getElementById('login-password').value
+                    })
+                });
+                if(!res.ok) {
+                    alert('Could not log in! (bad username or password?)');
+                    return;
+                }
+                logged_in = true;
+                set_login_status(logged_in);
+                bootstrap.Modal.getOrCreateInstance(
+                    document.getElementById('login-modal')).hide();
+            });
+        document.getElementById('confirm-signup')
+            .addEventListener('click', async ()=> {
+                let res = await fetch('/signup', {
+                    method: 'POST',
+                    credentials: 'same-origin',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({
+                        username:
+                        document.getElementById('signup-username').value,
+                        password:
+                        document.getElementById('signup-password').value
+                    })
+                });
+                if(!res.ok) {
+                    alert('Could not sign up! (Was your username taken?)');
+                    return;
+                }
+                alert("You're signed up!");
+                bootstrap.Modal.getOrCreateInstance(
+                    document.getElementById('signup-modal')).hide();
+                bootstrap.Modal.getOrCreateInstance(
+                    document.getElementById('login-modal')).show();
             });
         window.addEventListener('resize', () => map.invalidateSize());
         map.on('zoomend', async () => await getlandmarks());
