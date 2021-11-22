@@ -20,8 +20,11 @@ CREATE TABLE reviews (
        stars INTEGER,
        body VARCHAR,
        FOREIGN KEY(creator) REFERENCES users(uname),
-       FOREIGN KEY(landmark) REFERENCES landmarks(id),
+       FOREIGN KEY(landmark) REFERENCES landmarks(id) ON DELETE CASCADE,
        UNIQUE(creator,landmark)
 );
 
 CREATE INDEX coords ON landmarks (lat,long);
+CREATE INDEX revcreat ON reviews (creator);
+CREATE INDEX revlmk ON reviews (landmark);
+CREATE INDEX lmkcreat ON landmarks (creator);

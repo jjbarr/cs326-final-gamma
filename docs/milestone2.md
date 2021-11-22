@@ -18,16 +18,16 @@ presently under-specifed because we still need to figure out the spec.
     shall return a GeoJSON Feature with geometry of type Point and the
     properties `name` (string), `description` (string), `id` (number), `creator`
     (string), and `reviews` (array of objects with the properties `creator`
-    (string), `id` (number), `stars` (number), `landmark` (number), and
-    `body` (string)). It is undefined as to whether the `reviews` property
-    contains all reviews for a landmark. If there is some time at which this is
-    not the case, there will be a method provided for obtaining more reviews
-    than are listed.
+    (string), `id` (number), `stars` (number), `landmark` (number), `lname`
+    (string), and `body` (string)). It is undefined as to whether the `reviews`
+    property contains all reviews for a landmark. If there is some time at which
+    this is not the case, there will be a method provided for obtaining more
+    reviews than are listed.
   - As a `PATCH` endpoint, this endpoint requires authorization that corresponds
     to the original creating user. It shall accept the same set of properties as
     the `/create_landmark` endpoint, with the exception of the fact that any
-    property save for `authorization` and those required by GeoJSON may be null
-    (this presently is only the `name` and `description` properties). If the
+    property may be null, so long as a single property is present (presently is
+    only the `name` and `description` properties are valid here). If the
     property is null, it shall not be changed. Otherwise, all properties of the
     landmark shall be updated to those provided in the request.
   - As a `DELETE` endpoint, this endpoint shall accept an object containing
@@ -39,20 +39,21 @@ presently under-specifed because we still need to figure out the spec.
   and 5. The `body` field may contain arbitrary text.
 - `/review/<id>`: This is endpoint has multiple methods.
   - As a `GET` endpoint, this returns the review specified. The review is a JSON
-    object that shall contain the `creator`, `id`, `landmark`, `stars`, and
-    `body` fields as specified in the format of `/landmark/<id>`.
-  - As a `PATCH` endpoint, this endpoint shall accept an object containing an
-    `authorization` and `review` field, as `/landmark/<id>/add_review`
-    does. Unlike with requests to `/landmark/<id>/add_review`, fields in
-    `review` may be missing. This request shall, if the authorization token is
-    valid and matches the creating user, update the review on the server such
-    that fields that are present in `review` match their contents in `review`.
+    object that shall contain the `creator`, `id`, `landmark`, `lname`, `stars`,
+    and `body` fields as specified in the format of `/landmark/<id>`.
+  - As a `PATCH` endpoint, this receives an object in the same format
+    `/landmark/<id>/add_review` does. Unlike with requests to
+    `/landmark/<id>/add_review`, fields in `review` may be missing. This request
+    shall, if the authorization token is valid and matches the creating user,
+    update the review on the server such that fields that are present in
+    `review` match their contents in `review`.
   - As a `DELETE` endpoint, this endpoint shall accept an object containing an
     `authorization` field. If the token is valid and matches the creating user,
     this review shall be deleted.
 - `/user/<id>`: `GET` endpoint. If `<id>` is a valid username, this endpoint
   shall return a JSON object containing the fields `id` (string), `reviews`
   (array of `review` objects), and `landmarks` (array of `landmark` objects).
+  - `/self`: `GET` endpoint. Is equivalent to `/user/<id>` for the current user.
 - `/landmarks_in`: `GET` endpoint. Accepts two urlencoded coordinates in the
   parameters `lat1`, `long1`, `lat2`, `long2`, which define a rectangle. Shall
   return a JSON arry of `landmark` objects that are containted within the bounds

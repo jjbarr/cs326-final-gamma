@@ -88,7 +88,8 @@ app.post('/signup', async (req, res) => {
     if(!req.isAuthenticated()) {
         try {
             await db.none(
-                'INSERT INTO users(uname, password) VALUES(${username},${password})',
+                'INSERT INTO users(uname, password)' +
+                    ' VALUES(${username},${password})',
                 req.body);
         } catch(e) {
             //I have no clue how to handle this right now. I'll figure it out
@@ -132,12 +133,23 @@ app.post('/create_landmark', async (req, res) => {
     }
 });
 
+//if the key is a string, it's a username. If it's not, it's a landmark id.
+async function getReviews(key) {
+    const byuser = typeof key === 'string';
+    const reviews =  await db.manyOrNone('SELECT reviews.*, landmarks.lname '
+                                         +'FROM reviews INNER JOIN landmarks '
+                                         + 'ON (reviews.landmark=landmarks.id) '
+                                         + (byuser?'WHERE reviews.creator=${key}'
+                                            :'WHERE reviews.landmark=${key}'), {
+                                                key:key
+                                            });
+    return reviews;
+}
+
 /*turns a landmark from the database into geojson format.
  * return object, not JSON*/
 async function landmarkJSON(landmark) {
-    let reviews = await db.manyOrNone(
-        'SELECT * FROM reviews WHERE landmark=${id}',
-        {id: parseInt(landmark.id)});
+    const reviews = await getReviews(parseInt(landmark.id));
     return {
         type: 'Feature',
         geometry: {
@@ -163,8 +175,52 @@ app.get('/landmark/:id', async (req, res) => {
         res.sendStatus(404);
     }
 });
-app.patch('/landmark/:id', (req,res) => {res.sendStatus(500);});
-app.delete('/landmark/:id', (req,res) => {res.sendStatus(500);});
+app.patch('/landmark/:id', async (req,res) => {
+    if(!req.isAuthenticated()) {
+        res.sendStatus(401);
+        return;
+    }
+    if(!req.body
+       || (!req.body.properties.name && !req.body.properties.description)) {
+        res.sendStatus(400);
+        return;
+    }
+    try {
+        await db.none('UPDATE landmarks SET '
+                      + (req.body.properties.name? 'lname=${name} ':'')
+                      + (req.body.properties.name
+                         && req.body.properties.description?',':'')
+                      + (req.body.properties.description?
+                         'description=${desc} ':'')
+                      + 'WHERE id=${id} AND CREATOR=${creator}', {
+                          id: parseInt(req.params.id),
+                          creator: req.user,
+                          name: req.body.properties.name,
+                          desc: req.body.properties.description
+                      });
+    } catch(e) {
+        console.log(e);
+        res.sendStatus(400);
+        return;
+    }
+    res.sendStatus(200);
+});
+app.delete('/landmark/:id', async (req,res) => {
+    if(!req.isAuthenticated()) {
+        res.sendStatus(401);
+        return;
+    } try {
+        await db.none('DELETE FROM landmarks '
+                      + 'WHERE id=${id} AND creator=${creator}', {
+                          id: parseInt(req.params.id),
+                          creator: req.user
+                      });
+    } catch(e) {
+        res.sendStatus(400);
+        return;
+    }
+    res.sendStatus(200);
+});
 app.post('/landmark/:id/add_review', async (req,res) => {
     if(!req.isAuthenticated()) {
         res.sendStatus(401);
@@ -185,8 +241,69 @@ app.post('/landmark/:id/add_review', async (req,res) => {
         res.sendStatus(200);
     }
 });
-app.patch('/review/:id', (req, res) => {res.sendstatus(500);});
-app.get('/user/:id', (req,res) => {res.sendstatus(500);});
+app.get('/review/:id', async (req,res) => {res.sendStatus(500);});
+app.patch('/review/:id', async (req, res) => {
+    if(!req.isAuthenticated()) {
+        res.sendStatus(401);
+        return;
+    }
+    if(!req.body.body && !req.body.stars) {
+        res.sendStatus(400);
+        return;
+    } try {
+        await db.none('UPDATE reviews SET '
+                      + (req.body.stars? 'stars=${stars} ':'')
+                      + (req.body.stars&&req.body.body?',':'')
+                      + (req.body.body? 'body=${body} ':'')
+                      + 'WHERE id=${id} AND CREATOR=${creator}', {
+                          id: req.params.id,
+                          creator: req.user,
+                          stars: req.body.stars,
+                          body: req.body.body
+                      });
+    } catch(e) {
+        res.sendStatus(400);
+        return;
+    }
+    res.sendStatus(200);
+});
+app.delete('/review/:id', async (req,res) => {
+    if(!req.isAuthenticated()) {
+        res.sendStatus(401);
+        return;
+    }
+    try {
+        await db.none('DELETE FROM reviews '
+                      + 'WHERE id=${id} AND creator=${creator}', {
+                          id: parseInt(req.params.id),
+                          creator: req.user
+                      });
+    } catch(e) {
+        res.sendStatus(400);
+    }
+    res.sendStatus(200);
+});
+app.get('/user/:id', async (req,res) => {
+    try {
+        await db.one('SELECT * FROM users WHERE uname=${id}', req.params);
+    } catch(e) {
+        res.sendStatus(404);
+        return;
+    }
+    res.json({
+        id: req.params.id,
+        reviews: await getReviews(req.params.id),
+        landmarks: await Promise.all(
+            (await db.manyOrNone('SELECT * FROM landmarks WHERE creator=${id}',
+                                 req.params))
+                .map((lmk) => landmarkJSON(lmk))
+        )
+    });
+});
+app.get('/self', (req,res) =>
+    req.isAuthenticated()?
+        res.redirect(`/user/${req.user}`)
+        : res.sendStatus(401));
 app.get('/landmarks_in', async (req, res) => {
     //this is really bad in terms of numbers of queries. Should be fixed if this
     //is beyond a prototype. Which can probably be done with sufficient joins,
@@ -212,7 +329,6 @@ app.get('/landmarks_in', async (req, res) => {
     res.json(await Promise.all(lmks.map((lmk) => landmarkJSON(lmk))));
 });
 
-app.get('/review/:id', async (req,res) => {res.sendStatus(500);});
 
 //even for me this is gross
 app.get('/logged_in', (req,res) => {
