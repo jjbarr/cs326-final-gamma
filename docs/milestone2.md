@@ -1,3 +1,8 @@
+
+WARNING: This file (specifically section one) has been edited since
+milestone 2. This is because it was used as API documentation, and was updated
+as aspects of the API were altered so that we would be able to reference it.
+
 # 1. API Specification
 The server shall implement the following API endpoints. Some of them are
 presently under-specifed because we still need to figure out the spec.
@@ -30,13 +35,13 @@ presently under-specifed because we still need to figure out the spec.
     only the `name` and `description` properties are valid here). If the
     property is null, it shall not be changed. Otherwise, all properties of the
     landmark shall be updated to those provided in the request.
-  - As a `DELETE` endpoint, this endpoint shall accept an object containing
-    solely `authorization`. If that authorization corresponds to the creating
-    user, the landmark shall be deleted.
-- `/landmark/<id>/add_review`: A `POST` endpoint. This endpoint shall accept a
+  - As a `DELETE` endpoint, this endpoint will delete the object if the user is
+    authorized and the same user that created the object.
+- `/landmark/<id>/add_review`: A `POST` endpoint. This enndpoint shall accept a
   JSON object containing an `body` field (string), and a `stars` field
   (number). The `stars` field shall contain an integer number between 1
-  and 5. The `body` field may contain arbitrary text.
+  and 5. The `body` field may contain arbitrary text. If the user is authorized,
+  a new review of the given landmark will be created.
 - `/review/<id>`: This is endpoint has multiple methods.
   - As a `GET` endpoint, this returns the review specified. The review is a JSON
     object that shall contain the `creator`, `id`, `landmark`, `lname`, `stars`,
@@ -47,9 +52,8 @@ presently under-specifed because we still need to figure out the spec.
     shall, if the authorization token is valid and matches the creating user,
     update the review on the server such that fields that are present in
     `review` match their contents in `review`.
-  - As a `DELETE` endpoint, this endpoint shall accept an object containing an
-    `authorization` field. If the token is valid and matches the creating user,
-    this review shall be deleted.
+  - As a `DELETE` endpoint, this endpoint shall delete the review if the
+    authorization token is valid and corresponds to the original creating user.
 - `/user/<id>`: `GET` endpoint. If `<id>` is a valid username, this endpoint
   shall return a JSON object containing the fields `id` (string), `reviews`
   (array of `review` objects), and `landmarks` (array of `landmark` objects).
