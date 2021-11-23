@@ -1,15 +1,27 @@
-user profile table
-| Column       | Data Type | Description              |
-|--------------|-----------|--------------------------|
-| username     | String    | The name of the user     |
-| email        | String    | The email adress of user |
-| password     | String    | The password of the user |
+`users` Table
+| Column   | Data Type | Description                    |
+|----------|-----------|--------------------------------|
+| username | String    | The name of the user -- unique |
+| password | String    | The password of the user       |
 
-user review table
-| Column       | Data Type | Description              |
-|--------------|-----------|--------------------------|
-| username     | String    | The name of the user     |
-| landmark     | String    | The name of the landmark |
-| reviewID     | String    | The unique id of a review|
-| review       | String    | A review of the user     |
-| rating       | String    | The number of stars      |
+`landmarks` Table
+| Column      | Data Type | Description                                    |
+|-------------|-----------|------------------------------------------------|
+| id          | Integer   | The unique id of the landmark                  |
+| lat         | Double    | The latitude of the landmark                   |
+| long        | Double    | The longitude of the landmark                  |
+| lname       | String    | The name of the landmark                       |
+| description | String    | A description of what the landmark is          |
+| creator     | String    | The name of the user who created this landmark |
+
+
+`reviews` Table
+| Column   | Data Type | Description                           |
+|----------|-----------|---------------------------------------|
+| id       | Integer   | The unique id of a review             |
+| creator  | String    | The name of the creating user         |
+| landmark | Integer   | The id of the landmark being reviewed |
+| body     | String    | The actual body text of the review    |
+| stars    | Integer   | A star rating from one to five        |
+
+
