@@ -13,32 +13,7 @@ body, html {
     box-sizing: border-box;
 }
 
-.setrow{
-    background:white;
-    border-radius: 30px;
-    box-shadow: 12px 12px 22px grey;
-}
-img{
-    border-top-left-radius: 30px;
-    border-bottom-left-radius: 30px;
-    background-size: cover;
-}
-.btn1{
-    border:none;
-    outline:none;
-    height: 50px;
-    width: 100%;
-    background-color: black;
-    color: white;
-    border-radius: 4px;
-    font-weight: bold;
-}
-.btn1:hover{
-    background:white;
-    border: 1px solid;
-    color: black;
-}
-.form-cotrol{
+.form-control{
     border:1px solid grey;
     outline:none;
     height: 50px;
@@ -46,14 +21,6 @@ img{
     background-color: white;
     color: black;
     border-radius: 4px;
-}
-.middle{
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    -moz-transform: translateX(-50%) translateY(-50%);
-    -webkit-transform: translateX(-50%) translateY(-50%);
-    transform: translateX(-50%) translateY(-50%);
 }
 
 /*This unspeakable hack works around the fact that Bootstrap is an
@@ -63,41 +30,12 @@ img{
     left: auto !important;
 }
 
-table {
-    border-collapse: collapse;
-}
-th, td {
-    width: 100px;
-    border: 1px solid black;
-    background-color:rgb(213, 252, 150);
-}
-
-
-.user-checkbox{
-    display: flex; 
-    justify-content: center; 
-    align-items: center;
-}
 .btn-container {
     height: 200px;
     position: relative;
     margin: 5px;
 }
 
-th, td, p, input {
-    font:14px Verdana;
-}
-table, th, td 
-{
-    border: solid 1px #DDD;
-    border-collapse: collapse;
-    padding: 2px 3px;
-    text-align: center;
-}
 th {
     font-weight:bold;
-}
-
-.full{
-    color: #f8ce0b;
 }
