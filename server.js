@@ -7,9 +7,12 @@ const LocalStrategy = require('passport-local').Strategy;
 const pgp = require('pg-promise')();
 const app = express();
 
+
+require('dotenv').config();
+
 const db = pgp({
-    connectionString: process.env.DATABASE_URL,
-    ssl:{rejectUnauthorized:false}
+    connectionString: process.env.DATABASE_URL
+    //ssl:{rejectUnauthorized:false}
 });
 
 const session = {
@@ -25,7 +28,7 @@ const strategy = new LocalStrategy(async (uname, password, done) => {
     if(!user) {
         return done(null, false, {'message': 'Bad Username'});
     }
-    if(user.password !== password) {
+    if(!(await validatePassword(uname, password))) {
         await new Promise((r) => setTimeout(r, 1000));
         return done(null, false, {'message': 'Wrong Password'});
     }
@@ -38,6 +41,11 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(express.json());
 app.use(express.static('client'));
+
+//use minicrypt to encrypt stored password 
+const minicrypt = require('./miniCrypt');
+const mc = new minicrypt();
+
 
 passport.serializeUser((user, done) => {
     done(null, user);
@@ -58,21 +66,36 @@ app.post('/login',
              res.sendStatus(200);
          });
 
+async function existsUser(username){
+    return await db.one("SELECT password FROM users WHERE uname=$1;", username);
+}
+
+async function validatePassword(name, pwd) {
+    let storedPwd = await existsUser(name);
+    const res = mc.check(pwd, storedPwd['password'][0], storedPwd['password'][1]);
+	return res;
+}
+
 //once log out, redirect to the homepage
 app.post('/logout', (req, res) => {
     req.logout();
     res.sendStatus(200);
 });
 
+//store user and passwords in postgres db
+async function register(uname, password){
+    return db.none('INSERT INTO users VALUES ($1,$2);', [uname, password]);
+}
+
 app.post('/signup', async (req, res) => {
     if(!req.body.username || !req.body.password) {
-        res.sendStaus(400);
+        res.sendStatus(400);
     } else if(!req.isAuthenticated()) {
         try {
-            await db.none(
-                'INSERT INTO users(uname, password)' +
-                    ' VALUES(${username},${password})',
-                req.body);
+            let uname = req.body.username;
+            let pass = req.body.password;
+            const [salt, hashed] = mc.hash(pass);
+            register(uname, [salt, hashed]);
         } catch(e) {
             res.sendStatus(400);
             return;
