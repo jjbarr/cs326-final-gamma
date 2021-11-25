@@ -36,6 +36,11 @@
 | password | varchar   | The hashed password of the user |
 | salt     | varchar   | The random salt of the password |
 ---
+
+### Heroku
+[Landmarkster](https://landmarkster-gamma.herokuapp.com/)
+
+---
 ### Division of labor
 ##### Ruoyi Wu 
 (Email: ruoyiwu@umass.edu, Github: Ry-Wu)
