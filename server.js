@@ -12,7 +12,7 @@ require('dotenv').config();
 
 const db = pgp({
     connectionString: process.env.DATABASE_URL
-    //ssl:{rejectUnauthorized:false}
+    ssl:{rejectUnauthorized:false}
 });
 
 const session = {
