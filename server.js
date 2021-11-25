@@ -22,18 +22,28 @@ const session = {
 };
 
 const strategy = new LocalStrategy(async (uname, password, done) => {
-    let user = await db.oneOrNone('SELECT * FROM users WHERE uname=${uname}',
-                                  {uname:uname});
-    //todo don't just use plaintext.
+    let user = await getUserIfExists(uname);
     if(!user) {
         return done(null, false, {'message': 'Bad Username'});
     }
-    if(!(await validatePassword(uname, password))) {
+    if(!(validatePassword(user, password))) {
         await new Promise((r) => setTimeout(r, 1000));
         return done(null, false, {'message': 'Wrong Password'});
     }
     return done(null, uname);
 });
+
+//Returns a user if one exists, or null if not
+async function getUserIfExists(username){
+    return await
+    db.oneOrNone("SELECT * FROM users WHERE uname=$1;", username);
+}
+
+//takes a user object and validates that pwd is the password.
+function validatePassword(user, pwd) {
+    return mc.check(pwd, user.salt, user.password);
+}
+
 
 app.use(expressSession(session));
 passport.use(strategy);
@@ -66,25 +76,18 @@ app.post('/login',
              res.sendStatus(200);
          });
 
-async function existsUser(username){
-    return await db.one("SELECT password FROM users WHERE uname=$1;", username);
-}
-
-async function validatePassword(name, pwd) {
-    let storedPwd = await existsUser(name);
-    const res = mc.check(pwd, storedPwd['password'][0], storedPwd['password'][1]);
-	return res;
-}
-
 //once log out, redirect to the homepage
 app.post('/logout', (req, res) => {
     req.logout();
     res.sendStatus(200);
 });
 
-//store user and passwords in postgres db
+//store user and the hashed password and salt in postgres db
 async function register(uname, password){
-    return db.none('INSERT INTO users VALUES ($1,$2);', [uname, password]);
+    let [salt, hashed] = mc.hash(password);
+    return await db.none(
+        'INSERT INTO users(uname,password,salt) VALUES ($1,$2,$3);',
+        [uname, hashed, salt]);
 }
 
 app.post('/signup', async (req, res) => {
@@ -94,8 +97,7 @@ app.post('/signup', async (req, res) => {
         try {
             let uname = req.body.username;
             let pass = req.body.password;
-            const [salt, hashed] = mc.hash(pass);
-            register(uname, [salt, hashed]);
+            register(uname, pass);
         } catch(e) {
             res.sendStatus(400);
             return;
@@ -141,13 +143,12 @@ app.post('/create_landmark', async (req, res) => {
 //if the key is a string, it's a username. If it's not, it's a landmark id.
 async function getReviews(key) {
     const byuser = typeof key === 'string';
-    const reviews =  await db.manyOrNone('SELECT reviews.*, landmarks.lname '
-                                         +'FROM reviews INNER JOIN landmarks '
-                                         + 'ON (reviews.landmark=landmarks.id) '
-                                         + (byuser?'WHERE reviews.creator=${key}'
-                                            :'WHERE reviews.landmark=${key}'), {
-                                                key:key
-                                            });
+    const reviews =  await db.manyOrNone(
+        'SELECT reviews.*, landmarks.lname '
+            +'FROM reviews INNER JOIN landmarks '
+            + 'ON (reviews.landmark=landmarks.id) '
+            + (byuser?'WHERE reviews.creator=$1'
+               :'WHERE reviews.landmark=$1'), [key]);
     return reviews;
 }
 
@@ -173,8 +174,8 @@ async function landmarkJSON(landmark) {
 
 app.get('/landmark/:id', async (req, res) => {
     try {
-        let landmark = await db.one('SELECT * FROM landmarks WHERE id=${id}',
-                                    {id: parseInt(req.params.id)});
+        let landmark = await db.one('SELECT * FROM landmarks WHERE id=$1',
+                                    [parseInt(req.params.id)]);
         res.json(await landmarkJSON(landmark));
     } catch (e) {
         res.sendStatus(404);

@@ -1,12 +1,13 @@
 CREATE TABLE users (
        uname VARCHAR PRIMARY KEY,
-       password VARCHAR[]
+       password VARCHAR,
+       salt VARCHAR
 );
 
 CREATE TABLE landmarks (
        id SERIAL PRIMARY KEY,
-       lat DOUBLE PRECISION,
-       long DOUBLE PRECISION,
+       lat DOUBLE PRECISION UNIQUE,
+       long DOUBLE PRECISION UNIQUE,
        lname VARCHAR,
        description VARCHAR,
        creator VARCHAR,
