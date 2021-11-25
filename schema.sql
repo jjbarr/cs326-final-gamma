@@ -1,6 +1,6 @@
 CREATE TABLE users (
        uname VARCHAR PRIMARY KEY,
-       password VARCHAR
+       password VARCHAR[]
 );
 
 CREATE TABLE landmarks (

@@ -1,27 +1,28 @@
-`users` Table
-| Column   | Data Type | Description                    |
-|----------|-----------|--------------------------------|
-| username | String    | The name of the user -- unique |
-| password | String    | The password of the user       |
+### Tables of postgres database
 
-`landmarks` Table
-| Column      | Data Type | Description                                    |
-|-------------|-----------|------------------------------------------------|
-| id          | Integer   | The unique id of the landmark                  |
-| lat         | Double    | The latitude of the landmark                   |
-| long        | Double    | The longitude of the landmark                  |
-| lname       | String    | The name of the landmark                       |
-| description | String    | A description of what the landmark is          |
-| creator     | String    | The name of the user who created this landmark |
+#### landmarks table
+| Column       | Data Type           | Description                              |
+|--------------|---------------------|------------------------------------------|
+| id           | Integer             | The id of the landmark                   |
+| lat          | double precision    | The latitude of the landmark's location  |
+| long         | double precision    | The longitude of the landmark's location |
+| lname        | Varchar             | The name of the landmark                 |
+| description  | Varchar             | The review of the landmark               |
+| creator      | Varchar             | The creator of the landmark              |
 
 
-`reviews` Table
-| Column   | Data Type | Description                           |
-|----------|-----------|---------------------------------------|
-| id       | Integer   | The unique id of a review             |
-| creator  | String    | The name of the creating user         |
-| landmark | Integer   | The id of the landmark being reviewed |
-| body     | String    | The actual body text of the review    |
-| stars    | Integer   | A star rating from one to five        |
+#### reviews table
+| Column       | Data Type  | Description                        |
+|--------------|------------|------------------------------------|
+| id           | Integer    | The id of the review               |
+| creator      | Varchar    | The creator of the review          |
+| landmark     | Varchar    | The name of the landmark           |
+| stars        | Integer    | The number of stars of user rating |
+| body         | Varchar    | The content of the review          |
 
 
+#### users table
+| Column       | Data Type           | Description                              |
+|--------------|---------------------|------------------------------------------|
+| username     | Varchar             | The name of the user                     |
+| password     | Varchar[]           | The salt and hashed password of the user |
