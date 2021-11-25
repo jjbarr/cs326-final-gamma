@@ -154,21 +154,32 @@
             <ul class='list-group' id='landmark-info-reviews'></ul>
           </div>
           <div class='modal-footer'>
-            <form>
-              <h4>Add Review</h4>
-              <div class='mb-3'>
-                <label for='landmark-info-review-stars'>Stars:</label>
-                <input class='form-control' type='number' min='1' max='5'
-                       id='landmark-info-review-stars'>
-                <label for='landmark-info-review-body'>Review</label>
-                <textarea class='form-control' id='landmark-info-review-body'
-                          rows='3' placeholder='Your Review Here'></textarea>
+              <div class = "container">
+                <div class = "post">
+                  <div class = "text">Thanks for rating us!</div>
+                </div>  
+                <div class = "star-widget" id = "landmark-info-review-stars">
+                  <input type = "radio" name = "rate" id = "rate-5">
+                  <label for = "rate-5" class = "far fa-star"></label>
+                  <input type = "radio" name = "rate" id = "rate-4">
+                  <label for = "rate-4" class = "far fa-star"></label>
+                  <input type = "radio" name = "rate" id = "rate-3">
+                  <label for = "rate-3" class = "far fa-star"></label>
+                  <input type = "radio" name = "rate" id = "rate-2">
+                  <label for = "rate-2" class = "far fa-star"></label>
+                  <input type = "radio" name = "rate" id = "rate-1">
+                  <label for = "rate-1" class = "far fa-star"></label>
+                  <form actioin = "#">
+                      <header></header>
+                      <div class = "textarea">
+                          <textarea cols = "30" placeholder="Describe your experience..." id = "landmark-info-review-body"></textarea>
+                      </div>
+                      <div class = "btn" id = "landmark-info-add-review">
+                          <button type = "submit">Post</button>
+                      </div>
+                  </form>
+                </div>
               </div>
-            </form>
-            <button type='button' class='btn btn-primary'
-                    id='landmark-info-add-review'>
-              Add Review!
-            </button>
           </div>
         </div>
       </div>

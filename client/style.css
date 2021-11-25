@@ -1,6 +1,4 @@
 /*we need to force the map fullscreen*/
-
-
 body, html {
     min-height: 100%;
     height: 100%;
@@ -38,4 +36,98 @@ body, html {
 
 th {
     font-weight:bold;
+}
+
+/*
+Add stars css
+*/
+.container{
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+    width: 400px;
+    background: white;
+    padding: 20px 30px;
+    border: 1px solid #444;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    background-color:rgb(141, 241, 245);
+}
+
+.container .star-widget input{
+    display: none;
+}
+
+.star-widget label{
+    font-size: 40px;
+    color: #444;
+    padding: 10px;
+    float: right;
+    transition: all 0.2s ease;
+}
+input:not(:checked) ~ label:hover,
+input:not(checked) ~ label:hover ~ label{
+    color:rgb(100, 146, 189);
+}
+input:checked ~ label{
+    color:rgb(100, 146, 189);
+}
+input#rate-5:checked ~ label{
+    color:rgb(100, 146, 189);
+    text-shadow: 0 0 20px rgb(49, 29, 124);
+}
+
+.form{
+    display: none;
+}
+
+input:checked ~ form{
+    display: block;
+}
+
+form header{
+    width: 100%;
+    font-size: 25px;
+    color: rgb(100, 223, 192);;
+    font-weight: 500;
+    margin: 5px 0  20px 0;
+    text-align: center;
+    transition: all 0.2s ease;
+}
+
+form .textarea textarea{
+    height: 100%;
+    width: 100%;
+    outline: none;
+    color: black;
+    border: 1px solid #333;
+    padding: 10px;
+    font-size: 17px;
+    resize: none;
+}
+.btn{
+    height: 45px;
+    width: 100%;
+    margin: 15px 0;
+}
+.btn button{
+    height: 100%;
+    width: 100%;
+    border: 1px solid #444;
+    outline: none;
+    color: #999;
+    font-size: 17px;
+    font-weight: 500;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+.btn button:hover{
+    background-color: #1b1b1b;
+}
+.full{
+    color:rgb(100, 146, 189);
 }

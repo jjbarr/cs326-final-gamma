@@ -77,7 +77,17 @@ function showuser(user) {
         body.innerText = rev.body;
         review.appendChild(body);
         const stars = document.createElement('td');
-        stars.innerText = rev.stars;
+        //stars.innerText = rev.stars;
+        let starArr = [];
+        for (let k = 1; k <=5 ; k++){
+            let s = document.createElement('div');
+            s.setAttribute("class", "fas fa-star");
+            stars.appendChild(s);
+            starArr.push(s);
+        }
+        starArr.forEach((star, a) => {
+            star.classList.toggle('full', a <= rev.stars - 1);
+        });
         review.appendChild(stars);
         const edit = document.createElement('td');
         const editBtn = document.createElement('button');
@@ -361,6 +371,7 @@ window.addEventListener('DOMContentLoaded', async () => {
             .addEventListener('click', async () => {
                 if(!selected_landmark) return;
                 let id = landmarks[selected_landmark].properties.id;
+                document.getElementById('landmark-info-review-stars').value = display();
                 let res = await fetch(`/landmark/${id}/add_review`, {
                     method: 'POST',
                     headers: {'Content-Type': 'application/json'},
@@ -378,7 +389,7 @@ window.addEventListener('DOMContentLoaded', async () => {
                 } else {
                     alert('review submitted!');
                     document.getElementById('landmark-info-review-stars')
-                        .value = '';
+                        .value = '';  
                     document.getElementById('landmark-info-review-body')
                         .value = '';
                     await getlandmarks();
@@ -458,3 +469,24 @@ window.addEventListener('DOMContentLoaded', async () => {
         await getlandmarks();
     }); 
 });
+
+function display(){
+    let data = 0;
+    if(document.getElementById('rate-5').checked) {
+        //console.log("The rating is 5");
+        data = 5;
+    }else if(document.getElementById('rate-4').checked) {
+        //console.log("The rating is 4");
+        data = 4;
+    }else if(document.getElementById('rate-3').checked) {
+        //console.log("The rating is 3");
+        data = 3;
+    }else if(document.getElementById('rate-2').checked) {
+        //console.log("The rating is 2");
+        data = 2;
+    }else if(document.getElementById('rate-1').checked) {
+        //console.log("The rating is 1");
+        data = 1;
+    }
+    return data;
+}
