@@ -21,6 +21,7 @@ const session = {
     saveUninitialized: false
 };
 
+//login
 const strategy = new LocalStrategy(async (uname, password, done) => {
     let user = await getUserIfExists(uname);
     if(!user) {
@@ -90,6 +91,7 @@ async function register(uname, password){
         [uname, hashed, salt]);
 }
 
+//If not authenticated, save a new user with username, password, and salt
 app.post('/signup', async (req, res) => {
     if(!req.body.username || !req.body.password) {
         res.sendStatus(400);
