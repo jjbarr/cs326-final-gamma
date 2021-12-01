@@ -6,7 +6,7 @@ let userLoc = [];
 let landmarks = {};
 let landmarks_on_map = {};
 let selected_landmark = null;
-
+let picked_loc = null;
 async function getlandmarks() {
     //we should actually unbind landmarks and GC them, but for now we'll assume
     //that that's not an issue.
@@ -308,6 +308,36 @@ function set_login_status(logged_in) {
     }
 }
 
+function enter_pickloc_mode() {
+    document.getElementById("signin").style.display = "none";
+    document.getElementById("add-new-landmark").style.display = "none";
+    document.getElementById("user-menu").style.display = "none";
+    document.getElementById("pick-loc").style.display = 'inline-block';
+    map.on('click', position_pick_marker);
+}
+
+function exit_pickloc_mode() {
+    document.getElementById("pick-loc").style.display = 'none';
+    set_login_status(true);
+    map.off('click', position_pick_marker);
+    if(picked_loc) {
+        map.removeLayer(picked_loc);
+        picked_loc = null;
+    }
+    //this is slightly a hack, but if we enetered pickloc legitimately we were
+    //logged in, and we can't have been logged out in the interim by any means
+    //I can think of.
+}
+
+function position_pick_marker(clickev) {
+    if(!picked_loc) {
+        picked_loc = L.marker(clickev.latlng).addTo(map);
+        picked_loc._icon.classList.add('pick-loc-marker');
+    } else {
+        picked_loc.setLatLng(clickev.latlng);
+    }
+}
+
 window.addEventListener('DOMContentLoaded', async () => {
     // Yes, I *know* that there are better ways to know about whether or not
     // we're logged in on the front end. You, the professors, don't seem to want
@@ -332,53 +362,52 @@ window.addEventListener('DOMContentLoaded', async () => {
             userLocMarker.setLatLng(new L.LatLng(pos.coords.latitude,
                                                  pos.coords.longitude));
         });
+        document.getElementById('pick-loc-confirm')
+            .addEventListener('click', async () => {
+                if(!picked_loc) {
+                    alert('Please select a location!');
+                    return;
+                }
+                let loc = picked_loc.getLatLng();
+                await createLandmark([loc.lat, loc.lng]);
+                exit_pickloc_mode();
+            });
+        document.getElementById('pick-loc-abort')
+            .addEventListener('click', async() => {
+                exit_pickloc_mode();
+                bootstrap.Modal.getOrCreateInstance(
+                    document.getElementById('new-landmark-modal')).show();
+            });
         document.getElementById('confirm-new-landmark')
             .addEventListener('click', async () => {
                 const name = document.getElementById('landmark-name').value;
                 const description = document
                       .getElementById('landmark-description').value;
+                const pickLoc = document
+                      .getElementById('landmark-pickloc').checked;
                 if(!name || !description){
                     alert('The landmark must have a name and description.');
                     return;
                 }
-                let res = await fetch('/create_landmark', {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    credentials: 'same-origin',
-                    body: JSON.stringify({
-                        type: 'Feature',
-                        geometry: {
-                            type: 'Point',
-                            coordinates: userLoc
-                        },
-                        properties: {
-                            name: name,
-                            description: description
-                        }
-                    })
-                });
-                await getlandmarks();
-                if(!res.ok) {
-                    alert('Something went wrong submitting the landmark!');
-                } else {
+                if(pickLoc) {
+                    enter_pickloc_mode();
                     bootstrap.Modal.getOrCreateInstance(
                         document.getElementById('new-landmark-modal')).hide();
-                    document.getElementById('landmark-name').value = '';
-                    document.getElementById('landmark-description').value = '';
+                } else {
+                    await createLandmark(userLoc);
                 }
             });
         document.getElementById('landmark-info-add-review')
             .addEventListener('click', async () => {
                 if(!selected_landmark) return;
                 let id = landmarks[selected_landmark].properties.id;
-                document.getElementById('landmark-info-review-stars').value = display();
+                let stars = starValue();
                 let res = await fetch(`/landmark/${id}/add_review`, {
                     method: 'POST',
                     headers: {'Content-Type': 'application/json'},
                     credentials: 'same-origin',
                     body: JSON.stringify({
-                        stars: document
-                            .getElementById('landmark-info-review-stars').value,
+                        stars: stars,
                         body: document
                             .getElementById('landmark-info-review-body').value
                     })
@@ -470,7 +499,39 @@ window.addEventListener('DOMContentLoaded', async () => {
     }); 
 });
 
-function display(){
+async function createLandmark(location) {
+    const name = document.getElementById('landmark-name').value;
+    const description = document
+          .getElementById('landmark-description').value;
+    let res = await fetch('/create_landmark', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        credentials: 'same-origin',
+        body: JSON.stringify({
+            type: 'Feature',
+            geometry: {
+                type: 'Point',
+                coordinates: location
+            },
+            properties: {
+                name: name,
+                description: description
+            }
+        })
+    });
+    await getlandmarks();
+    if(!res.ok) {
+        alert('Something went wrong submitting the landmark!');
+    } else {
+        bootstrap.Modal.getOrCreateInstance(
+            document.getElementById('new-landmark-modal')).hide();
+        document.getElementById('landmark-name').value = '';
+        document.getElementById('landmark-description').value = '';
+        document.getElementById('landmark-userloc').checked = true;
+    }
+}
+
+function starValue(){
     let data = 0;
     if(document.getElementById('rate-5').checked) {
         //console.log("The rating is 5");

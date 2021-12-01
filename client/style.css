@@ -38,6 +38,19 @@ th {
     font-weight:bold;
 }
 
+
+#pick-loc {
+    display: none; 
+}
+
+#pick-loc-confirm, #pick-loc-abort {
+    display: inline-block;
+}
+
+.pick-loc-marker {
+    filter: hue-rotate(120deg);
+}
+
 /*
 Add stars css
 */

@@ -80,6 +80,16 @@
               </li>
             </ul>
           </div>
+          <div id='pick-loc'>
+            <div class='d-inline-flex flex-row'>
+              <button id='pick-loc-confirm' class='btn btn-success mx-2'>
+                <i class='fas fa-check'></i>
+              </button>
+              <button id='pick-loc-abort' class='btn btn-danger mx-2'>
+                <i class='fas fa-times'></i>
+              </button>
+            </div>
+          </div>
         </div>
       </nav>
         <!-- Leaflet needs a div to stick the map inside. -->
@@ -101,11 +111,6 @@
                     aria-label="Close"></button>
           </div>
           <div class='modal-body'>
-            <p>
-              The new landmark will be added at your current location, as
-              reported by your device. We don't support specifying a location on
-              your own at this time. Sorry!
-            </p>
             <form>
               <div class='mb-3'>
                 <label for='landmark-name' class='form-label'>
@@ -121,6 +126,20 @@
                 <textarea class='form-control' id='landmark-description'
                           rows='3'
                           placeholder='Describe Landmark Here'></textarea>
+              </div>
+              <div class='mb-3'>
+                <input type='radio' id='landmark-userloc'
+                       name='landmark-select-loc' value='user'
+                       checked>
+                <label for='landmark-userloc'>
+                  Use my location for this new landmark.
+                </label>
+                <br/>
+                <input type='radio' id='landmark-pickloc'
+                       name='landmark-select-loc' value='pick'>
+                <label for='landmark-pickloc'>
+                  Let me select a location for this landmark.
+                </label>
               </div>
             </form>
           </div>
@@ -154,32 +173,35 @@
             <ul class='list-group' id='landmark-info-reviews'></ul>
           </div>
           <div class='modal-footer'>
-              <div class = "container">
-                <div class = "post">
-                  <div class = "text">Thanks for rating us!</div>
-                </div>  
-                <div class = "star-widget" id = "landmark-info-review-stars">
-                  <input type = "radio" name = "rate" id = "rate-5">
-                  <label for = "rate-5" class = "far fa-star"></label>
-                  <input type = "radio" name = "rate" id = "rate-4">
-                  <label for = "rate-4" class = "far fa-star"></label>
-                  <input type = "radio" name = "rate" id = "rate-3">
-                  <label for = "rate-3" class = "far fa-star"></label>
-                  <input type = "radio" name = "rate" id = "rate-2">
-                  <label for = "rate-2" class = "far fa-star"></label>
-                  <input type = "radio" name = "rate" id = "rate-1">
-                  <label for = "rate-1" class = "far fa-star"></label>
-                  <form actioin = "#">
-                      <header></header>
-                      <div class = "textarea">
-                          <textarea cols = "30" placeholder="Describe your experience..." id = "landmark-info-review-body"></textarea>
-                      </div>
-                      <div class = "btn" id = "landmark-info-add-review">
-                          <button type = "submit">Post</button>
-                      </div>
-                  </form>
-                </div>
+            <div class="container">
+              <div class="post">
+                <div class="text">Thanks for rating us!</div>
+              </div>  
+              <div class="star-widget" id="landmark-info-review-stars">
+                <input type="radio" name="rate" id="rate-5">
+                <label for="rate-5" class="far fa-star"></label>
+                <input type="radio" name="rate" id="rate-4">
+                <label for="rate-4" class="far fa-star"></label>
+                <input type="radio" name="rate" id="rate-3">
+                <label for="rate-3" class="far fa-star"></label>
+                <input type="radio" name="rate" id="rate-2">
+                <label for="rate-2" class="far fa-star"></label>
+                <input type="radio" name="rate" id="rate-1">
+                <label for="rate-1" class="far fa-star"></label>
+                <form actioin="#">
+                  <header></header>
+                  <div class="textarea">
+                    <textarea cols="30"
+                              placeholder="Describe your experience..."
+                              id="landmark-info-review-body"></textarea>
+                  </div>
+                  <button type='button' class="btn btn-primary"
+                          id="landmark-info-add-review">
+                    Post!
+                  </button>
+                </form>
               </div>
+            </div>
           </div>
         </div>
       </div>
@@ -253,7 +275,7 @@
               </div>
             </form>
             <p>
-              Don't have an account?
+              Don&apos;t have an account?
               <a href="#" id='signup-modal-link'>Register here</a>
             </p>
           </div>
