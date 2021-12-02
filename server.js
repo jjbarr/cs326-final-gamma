@@ -99,7 +99,7 @@ app.post('/signup', async (req, res) => {
         try {
             let uname = req.body.username;
             let pass = req.body.password;
-            register(uname, pass);
+            await register(uname, pass);
         } catch(e) {
             res.sendStatus(400);
             return;
