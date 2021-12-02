@@ -313,10 +313,32 @@ app.get('/user/:id', async (req,res) => {
     });
 });
 
+
 app.get('/self', (req,res) =>
     req.isAuthenticated()?
         res.redirect(`/user/${req.user}`)
         : res.sendStatus(401));
+
+app.patch('/self', async (req, res) => {
+    if(!req.isAuthenticated()) {
+        res.sendStatus(401);
+        return;
+    }
+    if(!req.body.password) {
+        res.sendStatus(400);
+        return;
+    }
+    let [salt, pass] = mc.hash(req.body.password); 
+    try {
+        await db.none('UPDATE users SET password=$1, salt=$2 WHERE uname=$3',
+                      [pass, salt, req.user]);
+    } catch (e) {
+        res.sendStatus(400);
+        return;
+    }
+    res.sendStatus(200);
+    return;
+});
 
 app.get('/landmarks_in', async (req, res) => {
     //this is really bad in terms of numbers of queries. Should be fixed if this
