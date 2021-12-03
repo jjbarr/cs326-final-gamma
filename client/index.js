@@ -440,7 +440,7 @@ window.addEventListener('DOMContentLoaded', async () => {
                     credentials: 'same-origin',
                     headers: {'Content-Type': 'application/json'},
                     body: JSON.stringify({
-                        password: document.getElementById('change-pwd-new-password')
+                        password: document.getElementById('change-pwd-new-password').value
                     })
                 });
             });
