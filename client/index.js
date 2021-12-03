@@ -433,21 +433,26 @@ window.addEventListener('DOMContentLoaded', async () => {
                 showuser(user);
             });
         //change password
-        document.getElementById('change-password')
+        document.getElementById('confirm-change-password')
             .addEventListener('click', async() => {
                 let changed = await fetch('/self', {
-                    method: 'POST',
+                    method: 'PATCH',
                     credentials: 'same-origin',
                     headers: {'Content-Type': 'application/json'},
                     body: JSON.stringify({
-                        password: document.getElementById('change-pwd-new-password').value
+                        password:
+                        document.getElementById('change-pwd-new-password').value
                     })
                 });
-            });
-        document.getElementById('change-password-modal-link')
-            .addEventListener('click', () => {
-                bootstrap.Modal.getOrCreateInstance(
-                    document.getElementById('change-password-modal')).show();
+                if (changed.ok) {
+                    alert("your password has been changed successfully");
+                    document.getElementById('change-pwd-new-password')
+                        .value = '';
+                    bootstrap.Modal.getOrCreateInstance(
+                        document.getElementById('change-password-modal')).hide();
+                } else {
+                    alert("Error: could not change password");
+                }
             });
         document.getElementById('logout')
             .addEventListener('click', async () => {

@@ -73,11 +73,12 @@
               <li>
                 <a class="dropdown-item" id='link-userpage'>
                   My Reviews/Landmarks
-                  <a href="#" id='change-password-modal-link'></a>
                 </a>
               </li>
               <li>
-                <a class='dropdown-item' id='change-password'>
+                <a class='dropdown-item' id='change-password-link'
+                   data-bs-toggle="modal"
+                   data-bs-target="#change-password-modal">
                   Change Password
                 </a>
               </li>
@@ -346,18 +347,20 @@
       <div class='modal-dialog'>
         <div class='modal-content'>
           <div class='modal-header'>
-            <h3 class='modal-title' id='change-pwd-modal-label'>Change Password</h3>
+            <h3 class='modal-title' id='change-password-modal-label'>
+              Change Password
+            </h3>
             <button type="button" class="btn-close" data-bs-dismiss="modal"
                     aria-label="Close"></button>
           </div>
           <div class='modal-body'>
             <form>
-
               <div class='mb-3'>
                 <label for='change-pwd-new-password' class='form-label'>
                   New Password
                 </label>
-                <input type='password' class='form-control' id='change-pwd-new-password'
+                <input type='password' class='form-control'
+                       id='change-pwd-new-password'
                        placeholder='New password'>
               </div>
             </form>
@@ -367,7 +370,7 @@
                     data-bs-dismiss="modal">
               Cancel
             </button>
-            <button type="button" id='confirm-change'
+            <button type="button" id='confirm-change-password'
                     class="btn btn-primary">
               Confirm
             </button>
