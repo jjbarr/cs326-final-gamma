@@ -73,6 +73,12 @@
               <li>
                 <a class="dropdown-item" id='link-userpage'>
                   My Reviews/Landmarks
+                  <a href="#" id='change-password-modal-link'></a>
+                </a>
+              </li>
+              <li>
+                <a class='dropdown-item' id='change-password'>
+                  Change Password
                 </a>
               </li>
               <li>
@@ -328,6 +334,42 @@
             <button type="button" id='confirm-signup'
                     class="btn btn-primary">
               Sign Up!
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--Change password modal-->
+    <div class='modal fade' id='change-password-modal' tabindex='-1'
+         aria-labelledby='change-password-modal-label' aria-hidden='true'>
+      <div class='modal-dialog'>
+        <div class='modal-content'>
+          <div class='modal-header'>
+            <h3 class='modal-title' id='change-pwd-modal-label'>Change Password</h3>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+          </div>
+          <div class='modal-body'>
+            <form>
+
+              <div class='mb-3'>
+                <label for='change-pwd-new-password' class='form-label'>
+                  New Password
+                </label>
+                <input type='password' class='form-control' id='change-pwd-new-password'
+                       placeholder='New password'>
+              </div>
+            </form>
+          </div>
+          <div class='modal-footer'>
+            <button type="button" class="btn btn-secondary"
+                    data-bs-dismiss="modal">
+              Cancel
+            </button>
+            <button type="button" id='confirm-change'
+                    class="btn btn-primary">
+              Confirm
             </button>
           </div>
         </div>

@@ -11,8 +11,8 @@ const app = express();
 require('dotenv').config();
 
 const db = pgp({
-    connectionString: process.env.DATABASE_URL,
-    ssl:{rejectUnauthorized:false}
+    connectionString: process.env.DATABASE_URL
+    //ssl:{rejectUnauthorized:false}
 });
 
 const session = {

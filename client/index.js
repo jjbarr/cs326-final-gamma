@@ -296,6 +296,7 @@ function showuser(user) {
         document.getElementById('userpage-modal')).show();
 }
 
+
 function set_login_status(logged_in) {
     if(logged_in) {
         document.getElementById("signin").style.display = "none";
@@ -430,6 +431,23 @@ window.addEventListener('DOMContentLoaded', async () => {
             .addEventListener('click', async() => {
                 let user = await (await fetch('/self')).json();
                 showuser(user);
+            });
+        //change password
+        document.getElementById('change-password')
+            .addEventListener('click', async() => {
+                let changed = await fetch('/self', {
+                    method: 'POST',
+                    credentials: 'same-origin',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({
+                        password: document.getElementById('change-pwd-new-password')
+                    })
+                });
+            });
+        document.getElementById('change-password-modal-link')
+            .addEventListener('click', () => {
+                bootstrap.Modal.getOrCreateInstance(
+                    document.getElementById('change-password-modal')).show();
             });
         document.getElementById('logout')
             .addEventListener('click', async () => {
