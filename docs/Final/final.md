@@ -131,22 +131,18 @@ Obscura](https://www.atlasobscura.com/)
 ---
 
 #### URL Routes/Mappings
-| URL Routes                           |         Description       |                       Special Permissions                     |
-|:------------------------------------:|:-------------------------:|:-------------------------------------------------------------:|
-| Log In                               |Go to the log in page      | Only the right password and email can be loged in             |
-| Don't have an account? Register here |Go to the sign up page     |
-| Sign Up                              |Go to the sign up page     | The username which have signed before can not be signed again |
-| You're signed up!                    |Go to the log in page      |
-| Sign Out                             |Sign out an account        |
-| Home                                 | switch to the main page   |
+| URL Routes        |           Description                |                       Special Permissions                     |
+|:-----------------:|:------------------------------------:|:-------------------------------------------------------------:|
+|   /               | Our website only has one page, login/signup, see reviews, and change password are all pop-ups.     | 
 ---
 
 #### Authentication/Authorization
 
 |   Name   |          Description       |                                          Special Permissions                                       |
 |:--------:|:--------------------------:|:--------------------------------------------------------------------------------------------------:|
-| Log In   | switch to the log in page  | only the right password and email can be signed in. If is not accessible : pop up alret            |
-| Sign Up  | switch to the sign up page | the username which have signed before can not be signed again. If is not accessible : pop up alret |
+| Log In   | switch to the log in pop up  | only the right password and email can be signed in. If is not accessible : pop up alret            |
+| Sign Up  | switch to the sign up pop up | the username which have signed before can not be signed again. If is not accessible : pop up alert |
+| Change Password   | switch to the change password pop up | after signed in, the user can change its password. |
 
 ---
 
