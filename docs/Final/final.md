@@ -5,9 +5,8 @@
 ---
 
 #### Overview
-
-It allows users to share landmarks and various interesting sights in their
-neighborhood, and view landmarks that have been shared by others.
+This website allows users to share landmarks and various interesting sights in their
+neighborhood, and view landmarks that have been shared by others. Users can add landmarks, reviews and delete their own landmarks, reviews. Users can also see other people's reviews from the website.
     
 >The closest existing application to what we're trying to do is Google Niantic's
 Field Trip.  But it was unwilling to accept contributions from users and shut
@@ -175,24 +174,34 @@ All endpoints expect JSON as input unless otherwise specified
 
 ##### Ruoyi Wu 
 (Email: ruoyiwu@umass.edu, Github: Ry-Wu)
-1. Database design.
-2. Constructed back-end endpoints.
-3. User signup/login and password storage with encryption.
-4. Connection between front-end and back-end.
+1. Innovated website ideas including main functionalities and uniquesness from other websites existed.
+2. Documents(.md) writing and markdown design.
+3. Coding(HTMl&CSS) Navigation bar and search bar in the main page, and design user info, log in, sign up page.
+4. Coding(Javascript) Back-end API endpints Design Implementtion and database structure design.
+5. Database Structure Design and Construction.
+6. Font-end Interation/ Design with the back-end endpoints.
+7. User signup/login and password storage with encryption.
 
 ##### Joshua Barrett 
 (Emails: jjbarrett@umass.edu, jbarrett186@gmail.com; github:jjbarr)
-1. Database structure Design and Constructions.
-2. Constructed back-end endpoints
-3. Front-end Interaction / Design with the back-end endpoints.
-4. Add landmarks on the map.
+1. Innovated website ideas including main functionalities and uniquesness from other websites existed.
+2. Documents(.md) writing and markdown design.
+3. Coding(HTMl&CSS) Website main(index) page and User Info page. Adding new landmarks on the map.
+4. Coding(Javascript) Affects in main(index) page. Back-end API endpints Design Implementtion and database structure design. Font-end Interaction with the back-end server side.
+5. Heroku Deployment/ Github.
+6. Database Structure Design and Construction.
+7. Font-end Interation/ Design with  the back-end endpoints.
 
 ##### Qinyi Tang
 (Email: qinyitang@umass.edu, Github: Qinyit0)
-1. Design the database.
-2. Fix some errors on the backend
-3. Connection between front-end and back-end
-4. Render stars on the HTML.
+1. Innovated website ideas including main functionalities and uniquesness from other websites existed.
+2. Documents(.md) writing and markdown design.
+3. Coding(HTMl&CSS) Navigation bar and search bar in the main page. User Interface update for better user experience
+4. Coding(Javascript) Font-end Interaction with the back-end.
+5. Font-end stars rating HTML can be used for back-end response.
+6. Database Structure Design
+7. Font-end Interation/ Design with the back-end endpoints
+
 
 ---
 
