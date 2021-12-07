@@ -1,6 +1,6 @@
 # Final Rubric
 
-## General (\_/25 points) 
+## General (\_/30 points) 
 - Authentication
   - Successfully create a user
   - Successfully login as a user
@@ -9,7 +9,8 @@
     reviews/landmarks if you are logged in as that user
 - Routing
 - Linting/code style
-
+- Heroku Deployment
+- Video
 ## Map Screen (\_/30 points)
 - Successfully show user's location on the map
 - Successfully display all landmarks near the user
@@ -35,7 +36,7 @@
   - Provide an appropriate error message if a user who has already left a review
     attempts to leave a second one
 
-## CRUD (\_/15 points)
+## CRUD (\_/10 points)
 - Create
   - Users
   - Landmarks
