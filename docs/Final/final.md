@@ -164,6 +164,10 @@ All endpoints expect JSON as input unless otherwise specified
 | Log In          | switch to the log in pop up          | only the right password and email can be signed in. If is not accessible : pop up alret            |
 | Sign Up         | switch to the sign up pop up         | the username which have signed before can not be signed again. If is not accessible : pop up alert |
 | Change Password | switch to the change password pop up | after signed in, the user can change its password.                                                 |
+| Add Landarks | switch to the add landmarks pop up | after signed in, the user can add new landmarks.                                                 |
+| Delete Landmarks | switch to the My Reviews/Landmarks pop up | after signed in, the user can delete the landmarks himself/herself created.                                                 |
+| Add reviews | switch to the change password pop up | after signed in, the user can add new reviews.                                                 |
+| Delete Reviews | switch to the change password pop up | after signed in, the user can the user can delete the reviews himself/herself created.                                                 |
 
 ---
 
