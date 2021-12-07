@@ -131,8 +131,8 @@ Obscura](https://www.atlasobscura.com/)
 ---
 
 #### URL Routes/Mappings
-| URL Routes        |           Description                |                       Special Permissions                     |
-|:-----------------:|:------------------------------------:|:-------------------------------------------------------------:|
+| URL Routes        |           Description                |   
+|:-----------------:|:------------------------------------:|
 |   /               | Our website only has one page, login/signup, see reviews, and change password are all pop-ups.     | 
 ---
 
