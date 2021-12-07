@@ -401,6 +401,10 @@ window.addEventListener('DOMContentLoaded', async () => {
         document.getElementById('landmark-info-add-review')
             .addEventListener('click', async () => {
                 if(!selected_landmark) return;
+                if(!logged_in) {
+                    alert('Please log in before leaving a review');
+                    return;
+                }
                 let id = landmarks[selected_landmark].properties.id;
                 let stars = starValue();
                 let res = await fetch(`/landmark/${id}/add_review`, {
