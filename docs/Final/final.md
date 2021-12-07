@@ -147,8 +147,6 @@ Obscura](https://www.atlasobscura.com/)
 |:--------:|:--------------------------:|:--------------------------------------------------------------------------------------------------:|
 | Log In   | switch to the log in page  | only the right password and email can be signed in. If is not accessible : pop up alret            |
 | Sign Up  | switch to the sign up page | the username which have signed before can not be signed again. If is not accessible : pop up alret |
-| Reserve  | reserve a product          | need to sign in first. If is not accessible : pop up alret                                         |
-| Update   | update a product           | only the product owner can do this. If is not accessible : pop up alret                            |
 
 ---
 
