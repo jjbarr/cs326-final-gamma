@@ -1,5 +1,3 @@
-//This is prototype quality
-
 const express = require('express');
 const expressSession = require('express-session');
 const passport = require('passport');
@@ -37,7 +35,7 @@ const strategy = new LocalStrategy(async (uname, password, done) => {
 //Returns a user if one exists, or null if not
 async function getUserIfExists(username){
     return await
-    db.oneOrNone("SELECT * FROM users WHERE uname=$1;", username);
+    db.oneOrNone('SELECT * FROM users WHERE uname=$1;', username);
 }
 
 //takes a user object and validates that pwd is the password.
@@ -132,7 +130,7 @@ app.post('/create_landmark', async (req, res) => {
                             lname: pt.properties.name,
                             description: pt.properties.description,
                             creator: req.user
-                    });
+                        });
             } catch(e) {
                 res.sendStatus(500);
                 return;

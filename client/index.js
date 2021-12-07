@@ -81,7 +81,7 @@ function showuser(user) {
         let starArr = [];
         for (let k = 1; k <=5 ; k++){
             let s = document.createElement('div');
-            s.setAttribute("class", "fas fa-star");
+            s.setAttribute('class', 'fas fa-star');
             stars.appendChild(s);
             starArr.push(s);
         }
@@ -281,7 +281,7 @@ function showuser(user) {
                     body: JSON.stringify(newlmk)
                 });
                 if(!res.ok){
-                    alert("could not update landmark!");
+                    alert('could not update landmark!');
                 } else {
                     lmk = newlmk;
                     if(landmarks[lmk.properties.id])
@@ -299,26 +299,26 @@ function showuser(user) {
 
 function set_login_status(logged_in) {
     if(logged_in) {
-        document.getElementById("signin").style.display = "none";
-        document.getElementById("add-new-landmark").style.display = "inline";
-        document.getElementById("user-menu").style.display = "inline";
+        document.getElementById('signin').style.display = 'none';
+        document.getElementById('add-new-landmark').style.display = 'inline';
+        document.getElementById('user-menu').style.display = 'inline';
     } else {
-        document.getElementById("signin").style.display = "inline";
-        document.getElementById("add-new-landmark").style.display = "none";
-        document.getElementById("user-menu").style.display = "none";
+        document.getElementById('signin').style.display = 'inline';
+        document.getElementById('add-new-landmark').style.display = 'none';
+        document.getElementById('user-menu').style.display = 'none';
     }
 }
 
 function enter_pickloc_mode() {
-    document.getElementById("signin").style.display = "none";
-    document.getElementById("add-new-landmark").style.display = "none";
-    document.getElementById("user-menu").style.display = "none";
-    document.getElementById("pick-loc").style.display = 'inline-block';
+    document.getElementById('signin').style.display = 'none';
+    document.getElementById('add-new-landmark').style.display = 'none';
+    document.getElementById('user-menu').style.display = 'none';
+    document.getElementById('pick-loc').style.display = 'inline-block';
     map.on('click', position_pick_marker);
 }
 
 function exit_pickloc_mode() {
-    document.getElementById("pick-loc").style.display = 'none';
+    document.getElementById('pick-loc').style.display = 'none';
     set_login_status(true);
     map.off('click', position_pick_marker);
     if(picked_loc) {
@@ -449,13 +449,13 @@ window.addEventListener('DOMContentLoaded', async () => {
                     })
                 });
                 if (changed.ok) {
-                    alert("your password has been changed successfully");
+                    alert('your password has been changed successfully');
                     document.getElementById('change-pwd-new-password')
                         .value = '';
                     bootstrap.Modal.getOrCreateInstance(
                         document.getElementById('change-password-modal')).hide();
                 } else {
-                    alert("Error: could not change password");
+                    alert('Error: could not change password');
                 }
             });
         document.getElementById('logout')
@@ -513,7 +513,7 @@ window.addEventListener('DOMContentLoaded', async () => {
                     alert('Could not sign up! (Was your username taken?)');
                     return;
                 }
-                alert("You're signed up!");
+                alert('You\'re signed up!');
                 bootstrap.Modal.getOrCreateInstance(
                     document.getElementById('signup-modal')).hide();
                 bootstrap.Modal.getOrCreateInstance(
@@ -561,19 +561,14 @@ async function createLandmark(location) {
 function starValue(){
     let data = 0;
     if(document.getElementById('rate-5').checked) {
-        //console.log("The rating is 5");
         data = 5;
     }else if(document.getElementById('rate-4').checked) {
-        //console.log("The rating is 4");
         data = 4;
     }else if(document.getElementById('rate-3').checked) {
-        //console.log("The rating is 3");
         data = 3;
     }else if(document.getElementById('rate-2').checked) {
-        //console.log("The rating is 2");
         data = 2;
     }else if(document.getElementById('rate-1').checked) {
-        //console.log("The rating is 1");
         data = 1;
     }
     return data;
