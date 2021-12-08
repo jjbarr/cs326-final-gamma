@@ -5,8 +5,10 @@
 ---
 
 #### Overview
-This website allows users to share landmarks and various interesting sights in their
-neighborhood, and view landmarks that have been shared by others. Users can add landmarks, reviews and delete their own landmarks, reviews. Users can also see other people's reviews from the website.
+This website allows users to share landmarks and various interesting sights in
+their neighborhood, and view landmarks that have been shared by others. Users
+can add landmarks, reviews and delete their own landmarks, reviews. Users can
+also see other people's reviews from the website.
     
 >The closest existing application to what we're trying to do is Google Niantic's
 Field Trip.  But it was unwilling to accept contributions from users and shut
@@ -268,3 +270,22 @@ All endpoints expect JSON as input unless otherwise specified
 [Landmarkster](https://landmarkster-gamma.herokuapp.com/)
 
 #### Conclusion
+
+When building this project, we learned about how to create APIs, connect to
+databases, work with postgres, use Bootstrap (and the associated Font Awesome
+icon library) and map APIs, utilize location services, and do authentication. We
+had some difficulties connecting the frontend and backend together into a
+unified whole, setting up the database in a development environment, and making
+authentication work. Before we started this project we would have liked to know
+how authentication code worked because it was not properly explained for a long
+time. We would have liked to know more about how to design the frontend/backend
+interface ahead of time as well, and also more about the database.
+
+There were some other difficulties we encountered, and many were also centered
+around the database. For a time, we struggled to choose between Postgres and
+Mongo, and attempts were made to utilize each of them before eventually the
+decision was made to settle on Postgres. In terms of schema design, there were
+difficulties in designing a schema that would make the frequent lookup of
+landmarks within a certain coordinate range efficient--this is still not as
+efficient as it could be, and there are ways to do better, but they require GIS
+extensions that Heroku does not permit without additional payment.
