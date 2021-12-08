@@ -57,6 +57,19 @@ async function getlandmarks() {
 }
 
 function showuser(user) {
+    //draw a star rating of numstars inside element e
+    function addStars(e, numstars) {
+        let starArr = [];
+        for (let k = 1; k <=5 ; k++){
+            let s = document.createElement('div');
+            s.setAttribute('class', 'fas fa-star');
+            e.appendChild(s);
+            starArr.push(s);
+        }
+        starArr.forEach((star, a) => {
+            star.classList.toggle('full', a <= numstars - 1);
+        });
+    }
     //this really needs to get refactored for similarity reduction.
     //but it's sunday and I'm tired.
     document.getElementById('userpage-label').innerText
@@ -77,17 +90,7 @@ function showuser(user) {
         body.innerText = rev.body;
         review.appendChild(body);
         const stars = document.createElement('td');
-        //stars.innerText = rev.stars;
-        let starArr = [];
-        for (let k = 1; k <=5 ; k++){
-            let s = document.createElement('div');
-            s.setAttribute('class', 'fas fa-star');
-            stars.appendChild(s);
-            starArr.push(s);
-        }
-        starArr.forEach((star, a) => {
-            star.classList.toggle('full', a <= rev.stars - 1);
-        });
+        addStars(stars, rev.stars);
         review.appendChild(stars);
         const edit = document.createElement('td');
         const editBtn = document.createElement('button');
@@ -131,7 +134,7 @@ function showuser(user) {
             inputStars.setAttribute('min', '1');
             inputStars.setAttribute('max', '5');
             inputStars.value = rev.stars;
-            stars.innerText = '';
+            while(stars.firstChild) stars.removeChild(stars.firstChild);
             stars.appendChild(inputStars);
             let save = document.createElement('button');
             save.innerHTML = '<i class="fas fa-check"></i>';
@@ -147,7 +150,7 @@ function showuser(user) {
                 body.removeChild(inputDesc);
                 body.innerText = rev.body;
                 stars.removeChild(inputStars);
-                stars.innerText = rev.stars;
+                addStars(stars, rev.stars);
                 edit.removeChild(save);
                 edit.appendChild(editBtn);
                 del.removeChild(cancel);
