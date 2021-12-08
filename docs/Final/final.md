@@ -7,8 +7,7 @@
 #### Overview
 This website allows users to share landmarks and various interesting sights in
 their neighborhood, and view landmarks that have been shared by others. Users
-can add landmarks, reviews and delete their own landmarks, reviews. Users can
-also see other people's reviews from the website.
+can add landmarks, reviews and delete their own landmarks, reviews. 
     
 >The closest existing application to what we're trying to do is Google Niantic's
 Field Trip.  But it was unwilling to accept contributions from users and shut
